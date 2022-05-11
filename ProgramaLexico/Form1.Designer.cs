@@ -43,7 +43,13 @@ namespace ProgramaLexico
             this.Linea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.dtgIdentificadores = new System.Windows.Forms.DataGridView();
+            this.Numero = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TD = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Valor = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgIdentificadores)).BeginInit();
             this.SuspendLayout();
             // 
             // btnEvaluar
@@ -64,7 +70,7 @@ namespace ProgramaLexico
             this.txtCadena.Location = new System.Drawing.Point(47, 38);
             this.txtCadena.Name = "txtCadena";
             this.txtCadena.ShowSelectionMargin = true;
-            this.txtCadena.Size = new System.Drawing.Size(278, 246);
+            this.txtCadena.Size = new System.Drawing.Size(278, 405);
             this.txtCadena.TabIndex = 2;
             this.txtCadena.Text = "";
             this.txtCadena.SelectionChanged += new System.EventHandler(this.txtCadena_SelectionChanged);
@@ -73,7 +79,7 @@ namespace ProgramaLexico
             // 
             // btnCargar
             // 
-            this.btnCargar.Location = new System.Drawing.Point(38, 291);
+            this.btnCargar.Location = new System.Drawing.Point(36, 449);
             this.btnCargar.Name = "btnCargar";
             this.btnCargar.Size = new System.Drawing.Size(86, 39);
             this.btnCargar.TabIndex = 4;
@@ -83,7 +89,7 @@ namespace ProgramaLexico
             // 
             // btnEditar
             // 
-            this.btnEditar.Location = new System.Drawing.Point(126, 291);
+            this.btnEditar.Location = new System.Drawing.Point(124, 449);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(86, 39);
             this.btnEditar.TabIndex = 5;
@@ -92,7 +98,7 @@ namespace ProgramaLexico
             // 
             // btnGuardar
             // 
-            this.btnGuardar.Location = new System.Drawing.Point(214, 291);
+            this.btnGuardar.Location = new System.Drawing.Point(212, 449);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(86, 39);
             this.btnGuardar.TabIndex = 6;
@@ -189,18 +195,60 @@ namespace ProgramaLexico
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.richTextBox1.Size = new System.Drawing.Size(34, 246);
+            this.richTextBox1.Size = new System.Drawing.Size(34, 405);
             this.richTextBox1.TabIndex = 14;
             this.richTextBox1.TabStop = false;
             this.richTextBox1.Text = "";
             this.richTextBox1.WordWrap = false;
             this.richTextBox1.Enter += new System.EventHandler(this.richTextBox1_Enter);
             // 
+            // dtgIdentificadores
+            // 
+            this.dtgIdentificadores.AllowUserToAddRows = false;
+            this.dtgIdentificadores.AllowUserToDeleteRows = false;
+            this.dtgIdentificadores.AllowUserToResizeColumns = false;
+            this.dtgIdentificadores.AllowUserToResizeRows = false;
+            this.dtgIdentificadores.BackgroundColor = System.Drawing.SystemColors.Window;
+            this.dtgIdentificadores.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dtgIdentificadores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dtgIdentificadores.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Numero,
+            this.Nombre,
+            this.TD,
+            this.Valor});
+            this.dtgIdentificadores.GridColor = System.Drawing.SystemColors.ActiveCaption;
+            this.dtgIdentificadores.Location = new System.Drawing.Point(420, 351);
+            this.dtgIdentificadores.Name = "dtgIdentificadores";
+            this.dtgIdentificadores.RowHeadersVisible = false;
+            this.dtgIdentificadores.Size = new System.Drawing.Size(501, 137);
+            this.dtgIdentificadores.TabIndex = 15;
+            // 
+            // Numero
+            // 
+            this.Numero.HeaderText = "Numero";
+            this.Numero.Name = "Numero";
+            // 
+            // Nombre
+            // 
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.Name = "Nombre";
+            // 
+            // TD
+            // 
+            this.TD.HeaderText = "TD";
+            this.TD.Name = "TD";
+            // 
+            // Valor
+            // 
+            this.Valor.HeaderText = "Valor";
+            this.Valor.Name = "Valor";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1029, 415);
+            this.ClientSize = new System.Drawing.Size(1029, 514);
+            this.Controls.Add(this.dtgIdentificadores);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.dtgErrores);
             this.Controls.Add(this.label3);
@@ -218,6 +266,7 @@ namespace ProgramaLexico
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dtgIdentificadores)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -239,6 +288,11 @@ namespace ProgramaLexico
         private System.Windows.Forms.DataGridViewTextBoxColumn Linea;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.DataGridView dtgIdentificadores;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Numero;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Nombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn TD;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Valor;
     }
 }
 

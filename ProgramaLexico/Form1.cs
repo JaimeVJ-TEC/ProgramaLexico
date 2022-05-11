@@ -34,6 +34,7 @@ namespace ProgramaLexico
         private void Form1_Load(object sender, EventArgs e)
         {
             dtgErrores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dtgIdentificadores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             richTextBox1.BackColor = SystemColors.InactiveCaption;
             richTextBox1.ForeColor = Color.Black;
@@ -51,6 +52,7 @@ namespace ProgramaLexico
             LlenarTokens();
             LlenarErrores();
             MarcarErrores();
+            LlenarID();
         }
 
         public void EvaluarTexto()
@@ -189,6 +191,14 @@ namespace ProgramaLexico
             txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Regular);
         }
 
+        public void LlenarID()
+        {
+            dtgIdentificadores.Rows.Clear();
+            foreach(Identificador id in TablaSimbolos)
+            {
+                dtgIdentificadores.Rows.Add(id.Numero, id.Descripcion, id.TipoDato, id.Valor);
+            }
+        }
 
         /// <summary>
         /// Metodo que llena la matriz y magia negra
