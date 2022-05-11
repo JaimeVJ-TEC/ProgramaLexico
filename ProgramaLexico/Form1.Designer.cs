@@ -43,7 +43,6 @@ namespace ProgramaLexico
             this.Linea = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Error = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.richTextBox2 = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,13 +60,15 @@ namespace ProgramaLexico
             // 
             this.txtCadena.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtCadena.DetectUrls = false;
-            this.txtCadena.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtCadena.Font = new System.Drawing.Font("Consolas", 10F);
             this.txtCadena.Location = new System.Drawing.Point(47, 38);
             this.txtCadena.Name = "txtCadena";
             this.txtCadena.ShowSelectionMargin = true;
             this.txtCadena.Size = new System.Drawing.Size(278, 246);
             this.txtCadena.TabIndex = 2;
             this.txtCadena.Text = "";
+            this.txtCadena.SelectionChanged += new System.EventHandler(this.txtCadena_SelectionChanged);
+            this.txtCadena.VScroll += new System.EventHandler(this.txtCadena_VScroll);
             this.txtCadena.TextChanged += new System.EventHandler(this.txtCadena_TextChanged);
             // 
             // btnCargar
@@ -105,17 +106,17 @@ namespace ProgramaLexico
             this.txtTokens.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTokens.DetectUrls = false;
             this.txtTokens.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTokens.Location = new System.Drawing.Point(444, 38);
+            this.txtTokens.Location = new System.Drawing.Point(420, 38);
             this.txtTokens.Name = "txtTokens";
             this.txtTokens.ReadOnly = true;
             this.txtTokens.ShowSelectionMargin = true;
-            this.txtTokens.Size = new System.Drawing.Size(292, 246);
+            this.txtTokens.Size = new System.Drawing.Size(312, 246);
             this.txtTokens.TabIndex = 7;
             this.txtTokens.Text = "";
             // 
             // btnGuardarTokens
             // 
-            this.btnGuardarTokens.Location = new System.Drawing.Point(444, 290);
+            this.btnGuardarTokens.Location = new System.Drawing.Point(420, 290);
             this.btnGuardarTokens.Name = "btnGuardarTokens";
             this.btnGuardarTokens.Size = new System.Drawing.Size(86, 39);
             this.btnGuardarTokens.TabIndex = 8;
@@ -135,7 +136,7 @@ namespace ProgramaLexico
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(441, 22);
+            this.label2.Location = new System.Drawing.Point(417, 22);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(93, 13);
             this.label2.TabIndex = 10;
@@ -195,28 +196,11 @@ namespace ProgramaLexico
             this.richTextBox1.WordWrap = false;
             this.richTextBox1.Enter += new System.EventHandler(this.richTextBox1_Enter);
             // 
-            // richTextBox2
-            // 
-            this.richTextBox2.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.richTextBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox2.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox2.Location = new System.Drawing.Point(410, 38);
-            this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.ReadOnly = true;
-            this.richTextBox2.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.richTextBox2.Size = new System.Drawing.Size(34, 246);
-            this.richTextBox2.TabIndex = 15;
-            this.richTextBox2.TabStop = false;
-            this.richTextBox2.Text = "";
-            this.richTextBox2.WordWrap = false;
-            this.richTextBox2.Enter += new System.EventHandler(this.richTextBox2_Enter);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1029, 415);
-            this.Controls.Add(this.richTextBox2);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.dtgErrores);
             this.Controls.Add(this.label3);
@@ -232,6 +216,7 @@ namespace ProgramaLexico
             this.Name = "Form1";
             this.Text = "Lexico";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Resize += new System.EventHandler(this.Form1_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -254,7 +239,6 @@ namespace ProgramaLexico
         private System.Windows.Forms.DataGridViewTextBoxColumn Linea;
         private System.Windows.Forms.DataGridViewTextBoxColumn Error;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.RichTextBox richTextBox2;
     }
 }
 

@@ -37,8 +37,10 @@ namespace ProgramaLexico
 
             richTextBox1.BackColor = SystemColors.InactiveCaption;
             richTextBox1.ForeColor = Color.Black;
-            richTextBox2.BackColor = SystemColors.InactiveCaption;
-            richTextBox2.ForeColor = Color.Black;
+
+            richTextBox1.Font = txtCadena.Font;
+            txtCadena.Select();
+            AgregarNumerosLinea();
 
         }
 
@@ -351,26 +353,71 @@ namespace ProgramaLexico
         //Magia negra, agrega el numero de linea a la izquierda del richtextbox, toma en cuenta el Wrapping
         public void AgregarNumerosLinea()
         {
-            richTextBox1.Text = "";
-            int Aux = -1;
-            int Aux1 = txtCadena.GetLineFromCharIndex(txtCadena.TextLength) + 1;
-            int NumeroLineas = SepararLineas(txtCadena.Text).Length;
-            int LineasActuales = 0;
-            int temp = 0;
+            Point pt = new Point(0, 0);
 
-            for (int i = 0; i < NumeroLineas; i++)
+            int First_Index = txtCadena.GetCharIndexFromPosition(pt);
+            int First_Line = txtCadena.GetLineFromCharIndex(First_Index);
+
+            pt.X = ClientRectangle.Width;
+            pt.Y = ClientRectangle.Height;
+
+            int Last_Index = txtCadena.GetCharIndexFromPosition(pt);
+            int Last_Line = txtCadena.GetLineFromCharIndex(Last_Index);
+
+            richTextBox1.SelectionAlignment = HorizontalAlignment.Center;
+
+            richTextBox1.Text = "";
+            richTextBox1.Width = getWidth();
+
+            for (int i = First_Line; i <= Last_Line; i++)
             {
-                richTextBox1.Text += (i + 1);
-                Aux = txtCadena.Text.IndexOf('\n', Aux + 1);
-                temp = LineasActuales;
-                LineasActuales = txtCadena.GetLineFromCharIndex(Aux) + 1;
-                if (i == NumeroLineas - 1)
-                    LineasActuales = txtCadena.GetLineFromCharIndex(txtCadena.TextLength) + 1;
-                richTextBox1.Text += new string('\n', LineasActuales - temp);
+                richTextBox1.Text += i + 1 + "\n";
             }
+        }
+
+        public int getWidth()
+        {
+            int w = 25;
+            int line = txtCadena.Lines.Length;
+
+            if(line <= 99)
+            {
+                w = 20 + (int)txtCadena.Font.Size;
+            }   
+            else if(line <= 999)
+            {
+                w = 30 + (int)txtCadena.Font.Size;
+            }
+            else
+            {
+                w = 50 + (int)txtCadena.Font.Size;
+            }
+
+            return w;
         }
         
         private void txtCadena_TextChanged(object sender, EventArgs e)
+        {
+            AgregarNumerosLinea();
+        }
+
+        private void txtCadena_VScroll(object sender, EventArgs e)
+        {
+            richTextBox1.Text = "";
+            AgregarNumerosLinea();
+            richTextBox1.Invalidate();
+        }
+
+        private void txtCadena_SelectionChanged(object sender, EventArgs e)
+        {
+            Point pt = txtCadena.GetPositionFromCharIndex(txtCadena.SelectionStart);
+            if(pt.X == 1)
+            {
+                AgregarNumerosLinea();
+            }
+        }
+
+        private void Form1_Resize(object sender, EventArgs e)
         {
             AgregarNumerosLinea();
         }
