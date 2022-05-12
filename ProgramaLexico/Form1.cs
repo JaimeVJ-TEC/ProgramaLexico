@@ -266,6 +266,7 @@ namespace ProgramaLexico
             List<string> ListaTemp = new List<string>();
             string[] Cadenas = Regex.Split(Texto, @"(?<=[ ])");
 
+            //IFs necesarios para separar correctamente los comentarios y cadenas
             if (Texto.IndexOf("//") != -1)
             {
                 int InicioCom = Texto.IndexOf("//");
