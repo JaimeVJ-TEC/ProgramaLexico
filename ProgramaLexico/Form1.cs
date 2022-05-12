@@ -260,8 +260,78 @@ namespace ProgramaLexico
         public string[] SepararCadenas(string Texto)
         {
             Texto = Texto.Replace("\n", " ");
-            Texto = Texto + " ";
+            Texto = Texto.Trim();
+            Texto += " ";
+
+            List<string> ListaTemp = new List<string>();
             string[] Cadenas = Regex.Split(Texto, @"(?<=[ ])");
+
+            if (Texto.IndexOf("//") != -1)
+            {
+                int InicioCom = Texto.IndexOf("//");
+                string NoCom = Texto.Substring(0, InicioCom);
+                string Comentario = Texto.Substring(InicioCom, Texto.Length - InicioCom);
+
+                ListaTemp.AddRange(Regex.Split(NoCom, @"(?<=[ ])"));
+                ListaTemp.Add(Comentario.Replace(" ", " "));
+                Cadenas = ListaTemp.ToArray();
+            }
+            else if (Texto.IndexOf("/*") != -1)
+            {
+                int InicioCom = Texto.IndexOf("/*");
+                int FinCom = Texto.IndexOf("*/", InicioCom + 1);
+                string NoCadena = Texto.Substring(0, InicioCom);
+                string Cadena = "";
+                string CadenaDer = "";
+                ListaTemp.AddRange(Regex.Split(NoCadena, @"(?<=[ ])"));
+
+                if (FinCom == -1)
+                {
+                    Cadena = Texto.Substring(InicioCom, Texto.Length - 1);
+                    Cadena = Cadena.Insert(InicioCom + 1, " ");
+                    Cadena += " ";
+                    ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
+                }
+                else
+                {
+                    int SigEspacio = Texto.IndexOf(" ", FinCom + 1);
+                    Cadena = Texto.Substring(InicioCom, SigEspacio + 1 - InicioCom);
+                    ListaTemp.Add(Cadena);
+                    CadenaDer = Texto.Substring(SigEspacio, Texto.Length - SigEspacio);
+                    string[] TextoDer = SepararCadenas(CadenaDer);
+                    ListaTemp.AddRange(TextoDer);
+                }
+
+                Cadenas = ListaTemp.ToArray();
+            }
+            else if (Texto.IndexOf("\"") != -1)
+            {
+                int InicioCom = Texto.IndexOf("\"");
+                int FinCom = Texto.IndexOf("\"", InicioCom + 1);
+                string NoCadena = Texto.Substring(0, InicioCom);
+                string Cadena = "";
+                string CadenaDer = "";
+                ListaTemp.AddRange(Regex.Split(NoCadena, @"(?<=[ ])"));
+
+                if (FinCom== -1)
+                {
+                    Cadena = Texto.Substring(InicioCom, Texto.Length-1);
+                    Cadena = Cadena.Insert(InicioCom + 1, " ");
+                    Cadena += " ";
+                    ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
+                }
+                else
+                {
+                    int SigEspacio = Texto.IndexOf(" ", FinCom + 1);
+                    Cadena = Texto.Substring(InicioCom, SigEspacio+1 - InicioCom);
+                    ListaTemp.Add(Cadena);
+                    CadenaDer = Texto.Substring(SigEspacio, Texto.Length - SigEspacio);
+                    string[] TextoDer = SepararCadenas(CadenaDer);
+                    ListaTemp.AddRange(TextoDer);
+                }
+
+                Cadenas = ListaTemp.ToArray();
+            }
 
             Cadenas = Cadenas.Where(x => !string.IsNullOrEmpty(x)).ToArray();
             Cadenas = Cadenas.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
