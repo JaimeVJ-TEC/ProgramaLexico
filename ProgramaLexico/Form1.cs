@@ -206,7 +206,7 @@ namespace ProgramaLexico
         /// <returns></returns>
         public Celda[,] LlenarMatriz()
         {
-            SqlConnection cnn = new SqlConnection(@"Data Source=JAIMEPC\MSSQLSERVER01;Database=Automatas;Integrated Security=True");
+            SqlConnection cnn = new SqlConnection(@"Data Source=ZELDRISPC;Database=Automatas;Integrated Security=True");
             SqlCommand cmd = new SqlCommand(@"SELECT * FROM BD$", cnn);
             DataTable dataTable = new DataTable();
 
@@ -221,11 +221,11 @@ namespace ProgramaLexico
                 cnn.Close();
             }
 
-            Celda[,] Matriz = new Celda[dataTable.Rows.Count,dataTable.Columns.Count];
+            Celda[,] Matriz = new Celda[dataTable.Rows.Count+1,dataTable.Columns.Count];
 
-            for (int i = 0; i < dataTable.Rows.Count -1; i++)
+            for (int i = 0; i < dataTable.Rows.Count; i++)
             {
-                for (int j = 0; j < dataTable.Columns.Count -1; j++)
+                for (int j = 0; j < dataTable.Columns.Count; j++)
                 {
                     Celda c = new Celda();
 
