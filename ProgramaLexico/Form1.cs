@@ -281,16 +281,16 @@ namespace ProgramaLexico
             {
                 int InicioCom = Texto.IndexOf("/*");
                 int FinCom = Texto.IndexOf("*/", InicioCom + 1);
-                string NoCadena = Texto.Substring(0, InicioCom);
+                string NoCadena = "";
+                if (FinCom != -1)
+                    NoCadena = Texto.Substring(0, InicioCom);
                 string Cadena = "";
                 string CadenaDer = "";
                 ListaTemp.AddRange(SepararCadenas(NoCadena));
 
                 if (FinCom == -1)
                 {
-                    Cadena = Texto.Substring(InicioCom, Texto.Length - 1);
-                    Cadena = Cadena.Insert(InicioCom + 1, " ");
-                    Cadena = Cadena.Insert(InicioCom, " ");
+                    Cadena = Texto;
                     Cadena = Cadena.Trim();
                     Cadena += " ";
                     ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
@@ -310,16 +310,19 @@ namespace ProgramaLexico
             {
                 int InicioCom = Texto.IndexOf("\"");
                 int FinCom = Texto.IndexOf("\"", InicioCom + 1);
-                string NoCadena = Texto.Substring(0, InicioCom);
+                string NoCadena = "";
+                if(FinCom != -1)
+                    NoCadena = Texto.Substring(0, InicioCom);
                 string Cadena = "";
                 string CadenaDer = "";
                 ListaTemp.AddRange(SepararCadenas(NoCadena));
 
                 if (FinCom== -1)
                 {
-                    Cadena = Texto.Substring(InicioCom, Texto.Length-1);
-                    Cadena = Cadena.Insert(InicioCom + 1, " ");
-                    Cadena = Cadena.Insert(InicioCom, " ");
+                    //Cadena = Texto.Substring(InicioCom, Texto.Length-1);
+                    //Cadena = Cadena.Insert(InicioCom + 1, " ");
+                    //Cadena = Cadena.Insert(InicioCom, " ");
+                    Cadena = Texto;
                     Cadena = Cadena.Trim();
                     Cadena += " ";
                     ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
