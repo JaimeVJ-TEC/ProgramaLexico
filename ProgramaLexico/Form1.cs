@@ -163,7 +163,7 @@ namespace ProgramaLexico
 
             foreach (Error e in Errores)
             {
-                string cadena = e.Cadena.Replace(" ", "");
+                string cadena = e.Cadena.Trim();
                 Aux = txtCadena.Text.IndexOf(cadena);
                 txtCadena.SelectionStart = Aux;
                 txtCadena.SelectionLength = cadena.Length;
@@ -206,7 +206,7 @@ namespace ProgramaLexico
         /// <returns></returns>
         public Celda[,] LlenarMatriz()
         {
-            SqlConnection cnn = new SqlConnection(@"Data Source=ZELDRISPC;Database=Automatas;Integrated Security=True");
+            SqlConnection cnn = new SqlConnection(@"Data Source=JAIMEPC\MSSQLSERVER01;Database=Automatas;Integrated Security=True");
             SqlCommand cmd = new SqlCommand(@"SELECT * FROM BD$", cnn);
             DataTable dataTable = new DataTable();
 
@@ -221,7 +221,7 @@ namespace ProgramaLexico
                 cnn.Close();
             }
 
-            Celda[,] Matriz = new Celda[dataTable.Rows.Count+1,dataTable.Columns.Count];
+            Celda[,] Matriz = new Celda[dataTable.Rows.Count,dataTable.Columns.Count];
 
             for (int i = 0; i < dataTable.Rows.Count; i++)
             {
@@ -273,7 +273,7 @@ namespace ProgramaLexico
                 string NoCom = Texto.Substring(0, InicioCom);
                 string Comentario = Texto.Substring(InicioCom, Texto.Length - InicioCom);
 
-                ListaTemp.AddRange(Regex.Split(NoCom, @"(?<=[ ])"));
+                ListaTemp.AddRange(SepararCadenas(NoCom));
                 ListaTemp.Add(Comentario.Replace(" ", " "));
                 Cadenas = ListaTemp.ToArray();
             }
@@ -284,12 +284,14 @@ namespace ProgramaLexico
                 string NoCadena = Texto.Substring(0, InicioCom);
                 string Cadena = "";
                 string CadenaDer = "";
-                ListaTemp.AddRange(Regex.Split(NoCadena, @"(?<=[ ])"));
+                ListaTemp.AddRange(SepararCadenas(NoCadena));
 
                 if (FinCom == -1)
                 {
                     Cadena = Texto.Substring(InicioCom, Texto.Length - 1);
                     Cadena = Cadena.Insert(InicioCom + 1, " ");
+                    Cadena = Cadena.Insert(InicioCom, " ");
+                    Cadena = Cadena.Trim();
                     Cadena += " ";
                     ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
                 }
@@ -299,8 +301,7 @@ namespace ProgramaLexico
                     Cadena = Texto.Substring(InicioCom, SigEspacio + 1 - InicioCom);
                     ListaTemp.Add(Cadena);
                     CadenaDer = Texto.Substring(SigEspacio, Texto.Length - SigEspacio);
-                    string[] TextoDer = SepararCadenas(CadenaDer);
-                    ListaTemp.AddRange(TextoDer);
+                    ListaTemp.AddRange(SepararCadenas(CadenaDer));
                 }
 
                 Cadenas = ListaTemp.ToArray();
@@ -312,12 +313,14 @@ namespace ProgramaLexico
                 string NoCadena = Texto.Substring(0, InicioCom);
                 string Cadena = "";
                 string CadenaDer = "";
-                ListaTemp.AddRange(Regex.Split(NoCadena, @"(?<=[ ])"));
+                ListaTemp.AddRange(SepararCadenas(NoCadena));
 
                 if (FinCom== -1)
                 {
                     Cadena = Texto.Substring(InicioCom, Texto.Length-1);
                     Cadena = Cadena.Insert(InicioCom + 1, " ");
+                    Cadena = Cadena.Insert(InicioCom, " ");
+                    Cadena = Cadena.Trim();
                     Cadena += " ";
                     ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
                 }
@@ -328,7 +331,7 @@ namespace ProgramaLexico
                     ListaTemp.Add(Cadena);
                     CadenaDer = Texto.Substring(SigEspacio, Texto.Length - SigEspacio);
                     string[] TextoDer = SepararCadenas(CadenaDer);
-                    ListaTemp.AddRange(TextoDer);
+                    ListaTemp.AddRange(SepararCadenas(CadenaDer));
                 }
 
                 Cadenas = ListaTemp.ToArray();
