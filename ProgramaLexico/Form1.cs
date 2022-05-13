@@ -256,8 +256,72 @@ namespace ProgramaLexico
             return Matriz;
         }
 
-        //Metodo que separa texto de entrada en "palabras"
+        //Metodo nuevo que separa texto de entrada en "palabras"
         public string[] SepararCadenas(string Texto)
+        {
+            Texto = Texto.Replace("\n", " ");
+            Texto = Texto.Trim();
+            Texto += " ";
+
+            List<string> ListaTemp = new List<string>();
+
+            if (Texto != "" && Texto != " ")
+            {
+                if (Texto.Substring(0, 2) == "//")
+                {
+                    int FinCadena = Texto.Length;
+                    ListaTemp.Add(Texto.Substring(0, FinCadena));
+                }
+                else if (Texto.Substring(0, 2) == "/*")
+                {
+                    int Cierre = Texto.IndexOf("*/", 2);
+                    if (Cierre == -1)
+                    {
+                        Texto = Texto.Trim();
+                        Texto += "*/ ";
+                        ListaTemp.Add(Texto);
+                    }
+                    else
+                    {
+                        Cierre = Texto.IndexOf(" ", Cierre + 2);
+                        ListaTemp.Add(Texto.Substring(0, Cierre+1));
+                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(Cierre, Texto.Length - Cierre)));
+                    }
+                }
+                else if (Texto[0] == '\"')
+                {
+                    int Cierre = Texto.IndexOf('\"', 1);
+
+                    if (Texto.IndexOf(" ", 1) == 1)
+                    {
+                        ListaTemp.Add(Texto.Substring(0, 2));
+                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(2, Texto.Length - 2)));
+                    }
+                    else if (Cierre == -1)
+                    {
+                        Texto = Texto.Trim();
+                        Texto += "\" ";
+                        ListaTemp.Add(Texto);
+                    }
+                    else
+                    {
+                        Cierre = Texto.IndexOf(" ", Cierre + 1);
+                        ListaTemp.Add(Texto.Substring(0, Cierre + 1));
+                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(Cierre, Texto.Length - Cierre)));
+                    }
+                }
+                else
+                {
+                    int FinCadena = Texto.IndexOf(" ") + 1;
+                    ListaTemp.Add(Texto.Substring(0, FinCadena));
+                    ListaTemp.AddRange(SepararCadenas(Texto.Substring(FinCadena, Texto.Length - FinCadena)));
+                }
+            }
+            return ListaTemp.ToArray();
+        }
+
+        //Metodo Viejo
+        public string[] SepararCadenasS(string Texto)
         {
             Texto = Texto.Replace("\n", " ");
             Texto = Texto.Trim();
@@ -506,7 +570,7 @@ namespace ProgramaLexico
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            AgregarNumerosLinea();
+            
         }
     }
 }
