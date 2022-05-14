@@ -433,7 +433,7 @@ namespace ProgramaLexico
             {
                 int NumeroSimbolo = (int)Cadena[Contador];
 
-                if (NumeroSimbolo < 32 || NumeroSimbolo > 125)
+                if (NumeroSimbolo < 32 || NumeroSimbolo > 126)
                 {
                     Resultado[0] = "Error";
                     Resultado[1] = "Simbolo no definido";
