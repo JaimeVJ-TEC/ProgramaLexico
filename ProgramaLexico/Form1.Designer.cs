@@ -32,7 +32,6 @@ namespace ProgramaLexico
             this.btnEvaluar = new System.Windows.Forms.Button();
             this.txtCadena = new System.Windows.Forms.RichTextBox();
             this.btnCargar = new System.Windows.Forms.Button();
-            this.btnEditar = new System.Windows.Forms.Button();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.txtTokens = new System.Windows.Forms.RichTextBox();
             this.btnGuardarTokens = new System.Windows.Forms.Button();
@@ -86,15 +85,6 @@ namespace ProgramaLexico
             this.btnCargar.Text = "Cargar Programa";
             this.btnCargar.UseVisualStyleBackColor = true;
             this.btnCargar.Click += new System.EventHandler(this.btnCargar_Click);
-            // 
-            // btnEditar
-            // 
-            this.btnEditar.Location = new System.Drawing.Point(124, 449);
-            this.btnEditar.Name = "btnEditar";
-            this.btnEditar.Size = new System.Drawing.Size(86, 39);
-            this.btnEditar.TabIndex = 5;
-            this.btnEditar.Text = "Editar Programa";
-            this.btnEditar.UseVisualStyleBackColor = true;
             // 
             // btnGuardar
             // 
@@ -173,7 +163,7 @@ namespace ProgramaLexico
             this.dtgErrores.Location = new System.Drawing.Point(760, 39);
             this.dtgErrores.Name = "dtgErrores";
             this.dtgErrores.RowHeadersVisible = false;
-            this.dtgErrores.Size = new System.Drawing.Size(257, 245);
+            this.dtgErrores.Size = new System.Drawing.Size(378, 245);
             this.dtgErrores.TabIndex = 13;
             // 
             // Linea
@@ -247,7 +237,7 @@ namespace ProgramaLexico
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1029, 514);
+            this.ClientSize = new System.Drawing.Size(1150, 514);
             this.Controls.Add(this.dtgIdentificadores);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.dtgErrores);
@@ -257,7 +247,6 @@ namespace ProgramaLexico
             this.Controls.Add(this.btnGuardarTokens);
             this.Controls.Add(this.txtTokens);
             this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.btnEditar);
             this.Controls.Add(this.btnCargar);
             this.Controls.Add(this.btnEvaluar);
             this.Controls.Add(this.txtCadena);
@@ -277,7 +266,6 @@ namespace ProgramaLexico
         private System.Windows.Forms.Button btnEvaluar;
         private System.Windows.Forms.RichTextBox txtCadena;
         private System.Windows.Forms.Button btnCargar;
-        private System.Windows.Forms.Button btnEditar;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.RichTextBox txtTokens;
         private System.Windows.Forms.Button btnGuardarTokens;

@@ -173,7 +173,7 @@ namespace ProgramaLexico
                     bool Marcado = true;
                     while (Marcado)
                     {
-                        Aux = txtCadena.Text.IndexOf(cadena, Aux + cadena.Length-1);
+                        Aux = txtCadena.Text.IndexOf(cadena, Aux + cadena.Length);
                         txtCadena.SelectionStart = Aux;
                         Marcado = txtCadena.SelectionColor == Color.Red;
                     }
@@ -215,6 +215,10 @@ namespace ProgramaLexico
                 cnn.Open();
                 SqlDataAdapter Adapter = new SqlDataAdapter(cmd);
                 Adapter.Fill(dataTable);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Problema con la conexion a la base de datos","Error");
             }
             finally
             {
