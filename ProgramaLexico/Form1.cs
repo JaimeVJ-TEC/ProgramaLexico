@@ -30,194 +30,12 @@ namespace ProgramaLexico
 
         public Stack<string> TokenStack = new Stack<string>();
 
-        public string cadenaTokenTest = "begin { TIPO ID OPAS ( ID + ( CN + CN ) ) + CN } end";
-
-        //public string cadenaTokenTest = "begin { INSTR } end";
-
         public Form1()
         {
             InitializeComponent();
 
             MatrizTransicion = LlenarMatriz();
-
-            //#INSTRUCCIONES PARA EL ANALIZADOR SINTACTICO
-            //ListaINS.Add(new List<string> { "IN", "begin { INSTR } end" });
-            //ListaINS.Add(new List<string> { "INSTR", "INID_2", "INSTR INSTR"});
-            //ListaINS.Add(new List<string> { "INID","TIPO ID"});
-            //ListaINS.Add(new List<string> { "INID_2", "TIPO INAS" });
-            //ListaINS.Add(new List<string> { "INAS", "ID OPAS ID", "ID OPAS PR24", "ID OPAS PR23", "ID OPAS CN", "ID OPAS INAR", "ID OPAS COND" });
-            //ListaINS.Add(new List<string> { "EXPRESION", "ID", "CADENA", "PR24", "PR23", "CN", "INAR","COND" });
-            //ListaINS.Add(new List<string> { "INAR", "ID + ID", "ID + ( INAR )", "ID + CN", "CN + ID", "CN + CN", "CN + ( INAR )", "( INAR ) + ID", "( INAR ) + CN", "( INAR ) + ( INAR )" });
-            //ListaINS.Add(new List<string> { "OPERANDO", "ID", "CN", "( INAR )" });
-            //AnalizadorSintactico();
         }
-
-        //METODO PRINCIPAL DEL ANALIZADOR SINTACTICO
-        public void AnalizadorSintactico()
-        {
-            MessageBox.Show(cadenaTokenTest);
-            string strTokenStack = "";
-            string[] TokenBuffer = cadenaTokenTest.Split(' ');
-            int posicion = 0;
-
-            while(true)
-            {
-                strTokenStack += TokenBuffer[posicion] + " ";
-                string[] AuxArray = strTokenStack.Split(' ');
-                string AuxCadena = "";
-
-                AuxArray = AuxArray.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-                AuxArray = AuxArray.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-
-                for (int i = 0; i < AuxArray.Length; i++)
-                {
-                    AuxCadena = AuxCadena.Insert(0, AuxArray[(AuxArray.Length - 1) - i]);
-                    string Ins = BuscarInstruccion(AuxCadena);
-
-                    if (Ins != "")
-                    {
-                        MessageBox.Show(strTokenStack);
-
-                        strTokenStack = strTokenStack.Replace(AuxCadena, Ins);
-                        AuxCadena = Ins;
-                        Ins = BuscarInstruccion(AuxCadena);
-
-                        MessageBox.Show(strTokenStack);
-                        if (Ins != "")
-                        {
-                            strTokenStack = strTokenStack.Replace(AuxCadena, Ins);
-                            AuxCadena = Ins;
-
-                            MessageBox.Show(strTokenStack);
-                        }
-                    }
-                    AuxCadena = AuxCadena.Insert(0, " ");
-                }
-
-                posicion++;
-
-                if (strTokenStack == "IN ")
-                    break;
-            }
-        }
-
-        //METODO AUXILIAR DEL ANALIZADOR SINTACTICO
-        public string BuscarInstruccion(string Cadena)
-        {
-            bool Encontrada = false;
-            string InsID = "";
-
-            foreach(List<string> ins in ListaINS)
-            {
-                for (int i = 1; i < ins.Count; i++)
-                {
-                    if (Cadena == ins[i])
-                    {
-                        Encontrada = true;
-                        InsID = ins[0];
-                        break;
-                    }
-                }
-                if (Encontrada)
-                    break;
-            }
-            return InsID;
-        }
-
-        //public bool VerificarInstruccion(string INS, string Tokens)
-        //{
-        //    bool Coincide = false;
-        //    foreach(List<string> ls in ListaINS)
-        //    {
-        //        if(INS == ls[0])
-        //        {
-        //            foreach(string s in ls)
-        //            {
-        //                if (Tokens == s)
-        //                    Coincide = true;
-        //            }
-        //        }
-        //    }
-        //    return Coincide;
-        //}
-
-        //public void AnalizadorSintactico(string Cadena)
-        //{
-        //    Stack<string> TokenStack = new Stack<string>();
-        //    string[] TokenBuffer = Cadena.Split(' ');
-        //    string LookAhead = "";
-        //    int Posicion = 0;
-        //    bool Fin = false;
-
-        //    while (!Fin)
-        //    {
-        //        TokenStack.Push(TokenBuffer[Posicion]);
-        //        if (Posicion + 1 < TokenBuffer.Length)
-        //            LookAhead = TokenBuffer[Posicion + 1];
-
-        //        foreach (List<string> ins in ListaINS)
-        //        {
-        //            bool found = false;
-        //            for (int i = 1; i < ins.Count; i++)
-        //            {
-        //                string[] AuxArray = ins[i].Split(' ');
-        //                string AuxString = "";
-        //                if (AuxArray.Length != 1)
-        //                    AuxString = AuxArray[0] + " " + AuxArray[1];
-
-        //                if (TokenStack.Peek() == ins[i] && TokenStack.Peek() + " " + LookAhead != AuxString)
-        //                {
-        //                    TokenStack.Pop();
-        //                    TokenStack.Push(ins[0]);
-        //                    Posicion++;
-        //                    found = true;
-        //                }
-        //                else if (TokenStack.Peek() + " " + LookAhead == AuxString)
-        //                {
-        //                    Posicion++;
-        //                    TokenStack.Push(LookAhead);
-        //                }
-        //            }
-        //            if (!found)
-        //            {
-        //                Posicion++;
-        //                TokenStack.Push(LookAhead);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public void AnalizadorSintactico()
-        //{
-        //    int Posicion = 0;
-        //    List<string> Tokens = cadenaTokenTest.Split(' ').ToList();
-        //    int CantTokens = Tokens.Count;
-
-        //    foreach (List<string> ins in ListaINS)
-        //    {
-        //        for (int i = 1; i < ins.Count; i++)
-        //        {
-        //            string[] ArregloIns = ins[i].Split(' ');
-        //            int ContAux = ArregloIns.Length;
-        //            string TokensAux = "";
-
-        //            for (int j = Posicion; j < Posicion + ContAux; j++)
-        //            {
-        //                TokensAux += Tokens[j] + " ";
-        //            }
-        //            TokensAux = TokensAux.Trim();
-
-        //            if (TokensAux == ins[i])
-        //            {
-        //                for (int j = Posicion; j < Posicion + ContAux; j++)
-        //                {
-        //                    Tokens.RemoveAt(j);
-        //                }
-        //                Tokens.Insert(Posicion, ins[0]);
-        //            }
-        //        }
-        //    }
-        //}
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -232,7 +50,6 @@ namespace ProgramaLexico
             AgregarNumerosLinea();
 
         }
-
 
         private void btnEvaluar_Click(object sender, EventArgs e)
         {
@@ -269,8 +86,8 @@ namespace ProgramaLexico
                     {
                         if (Resultado[1] == "ID Valido.")
                         {
-                            string Identificador = Cadena.Replace(" ", "");
                             bool existe = false;
+                            string Identificador = Cadena.Replace(" ", "");
 
                             foreach (Identificador id in TablaSimbolos)
                             {
@@ -293,6 +110,66 @@ namespace ProgramaLexico
 
                                 ContadorID++;
                             }
+                        }
+                        else if(Resultado[1] == "CNE")
+                        {
+                            Identificador Iden = new Identificador();
+                            Iden.Numero = ContadorID;
+                            Iden.Descripcion = "CNE_"+ContadorID;
+                            Iden.TipoDato = "Entero";
+                            Iden.Valor = int.Parse(Cadena);
+                            TablaSimbolos.Add(Iden);
+                            TokensLinea[ContadorToken] = Resultado[1];
+
+                            ContadorID++;
+                        }
+                        else if (Resultado[1] == "CNR")
+                        {
+                            Identificador Iden = new Identificador();
+                            Iden.Numero = ContadorID;
+                            Iden.Descripcion = "CNR_" + ContadorID;
+                            Iden.TipoDato = "Real";
+                            Iden.Valor = double.Parse(Cadena);
+                            TablaSimbolos.Add(Iden);
+                            TokensLinea[ContadorToken] = Resultado[1];
+
+                            ContadorID++;
+                        }
+                        else if (Resultado[1] == "CNEX")
+                        {
+                            Identificador Iden = new Identificador();
+                            Iden.Numero = ContadorID;
+                            Iden.Descripcion = "CNEX_" + ContadorID;
+                            Iden.TipoDato = "Real";
+                            Iden.Valor = double.Parse(Cadena);
+                            TablaSimbolos.Add(Iden);
+                            TokensLinea[ContadorToken] = Resultado[1];
+
+                            ContadorID++;
+                        }
+                        else if (Resultado[1] == "CADENAS")
+                        {
+                            Identificador Iden = new Identificador();
+                            Iden.Numero = ContadorID;
+                            Iden.Descripcion = "CAD_" + ContadorID;
+                            Iden.TipoDato = "Cadena";
+                            Iden.Valor = Cadena;
+                            TablaSimbolos.Add(Iden);
+                            TokensLinea[ContadorToken] = Resultado[1];
+
+                            ContadorID++;
+                        }
+                        else if (Resultado[1] == "PR23" || Resultado[1] == "PR24")
+                        {
+                            Identificador Iden = new Identificador();
+                            Iden.Numero = ContadorID;
+                            Iden.Descripcion = "BLN_" + ContadorID;
+                            Iden.TipoDato = "Booleano";
+                            Iden.Valor = bool.Parse(Cadena);
+                            TablaSimbolos.Add(Iden);
+                            TokensLinea[ContadorToken] = Resultado[1];
+
+                            ContadorID++;
                         }
                         else
                         {
@@ -683,6 +560,8 @@ namespace ProgramaLexico
             }
         }
 
+        #region GUI stuff
+
         private void richTextBox1_Enter(object sender, EventArgs e)
         {
             txtCadena.Focus();
@@ -764,5 +643,7 @@ namespace ProgramaLexico
         {
             
         }
+
+        #endregion
     }
 }

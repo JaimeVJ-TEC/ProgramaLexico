@@ -14,7 +14,7 @@ namespace ProgramaLexico
 
         public string TipoDato { get; set; }
 
-        public double Valor { get; set; }
+        public dynamic Valor { get; set; }
 
         //TODO Valor
     }
