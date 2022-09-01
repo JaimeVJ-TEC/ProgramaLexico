@@ -38,18 +38,18 @@ namespace ProgramaLexico
         {
             InitializeComponent();
 
-            MatrizTransicion = LlenarMatriz();
+            //MatrizTransicion = LlenarMatriz();
 
             //#INSTRUCCIONES PARA EL ANALIZADOR SINTACTICO
-            //ListaINS.Add(new List<string> { "IN", "begin { INSTR } end" });
-            //ListaINS.Add(new List<string> { "INSTR", "INID_2", "INSTR INSTR"});
-            //ListaINS.Add(new List<string> { "INID","TIPO ID"});
-            //ListaINS.Add(new List<string> { "INID_2", "TIPO INAS" });
-            //ListaINS.Add(new List<string> { "INAS", "ID OPAS ID", "ID OPAS PR24", "ID OPAS PR23", "ID OPAS CN", "ID OPAS INAR", "ID OPAS COND" });
-            //ListaINS.Add(new List<string> { "EXPRESION", "ID", "CADENA", "PR24", "PR23", "CN", "INAR","COND" });
-            //ListaINS.Add(new List<string> { "INAR", "ID + ID", "ID + ( INAR )", "ID + CN", "CN + ID", "CN + CN", "CN + ( INAR )", "( INAR ) + ID", "( INAR ) + CN", "( INAR ) + ( INAR )" });
+            ListaINS.Add(new List<string> { "IN", "begin { INSTR } end" });
+            ListaINS.Add(new List<string> { "INSTR", "INID_2", "INSTR INSTR" });
+            //ListaINS.Add(new List<string> { "INID", "TIPO ID" });
+            ListaINS.Add(new List<string> { "INID_2", "TIPO INAS" });
+            ListaINS.Add(new List<string> { "INAS", "ID OPAS ID", "ID OPAS PR24", "ID OPAS PR23", "ID OPAS CN", "ID OPAS INAR", "ID OPAS COND" });
+            //ListaINS.Add(new List<string> { "EXPRESION", "ID", "CADENA", "PR24", "PR23", "CN", "INAR", "COND" });
+            ListaINS.Add(new List<string> { "INAR", "ID + ID", "ID + ( INAR )", "ID + CN", "CN + ID", "CN + CN", "CN + ( INAR )", "( INAR ) + ID", "( INAR ) + CN", "( INAR ) + ( INAR )" });
             //ListaINS.Add(new List<string> { "OPERANDO", "ID", "CN", "( INAR )" });
-            //AnalizadorSintactico();
+            AnalizadorSintactico();
         }
 
         //METODO PRINCIPAL DEL ANALIZADOR SINTACTICO
