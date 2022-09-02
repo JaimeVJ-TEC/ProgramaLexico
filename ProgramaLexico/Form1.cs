@@ -116,7 +116,7 @@ namespace ProgramaLexico
                             Identificador Iden = new Identificador();
                             Iden.Numero = ContadorID;
                             Iden.Descripcion = "CNE_"+ContadorID;
-                            Iden.TipoDato = "Entero";
+                            Iden.TipoDato = "int";
                             Iden.Valor = int.Parse(Cadena);
                             TablaSimbolos.Add(Iden);
                             TokensLinea[ContadorToken] = Resultado[1];
@@ -128,7 +128,7 @@ namespace ProgramaLexico
                             Identificador Iden = new Identificador();
                             Iden.Numero = ContadorID;
                             Iden.Descripcion = "CNR_" + ContadorID;
-                            Iden.TipoDato = "Real";
+                            Iden.TipoDato = "double";
                             Iden.Valor = double.Parse(Cadena);
                             TablaSimbolos.Add(Iden);
                             TokensLinea[ContadorToken] = Resultado[1];
@@ -140,7 +140,7 @@ namespace ProgramaLexico
                             Identificador Iden = new Identificador();
                             Iden.Numero = ContadorID;
                             Iden.Descripcion = "CNEX_" + ContadorID;
-                            Iden.TipoDato = "Real";
+                            Iden.TipoDato = "double";
                             Iden.Valor = double.Parse(Cadena);
                             TablaSimbolos.Add(Iden);
                             TokensLinea[ContadorToken] = Resultado[1];
@@ -152,8 +152,8 @@ namespace ProgramaLexico
                             Identificador Iden = new Identificador();
                             Iden.Numero = ContadorID;
                             Iden.Descripcion = "CAD_" + ContadorID;
-                            Iden.TipoDato = "Cadena";
-                            Iden.Valor = Cadena;
+                            Iden.TipoDato = "string";
+                            Iden.Valor = Cadena.Replace("\"","");
                             TablaSimbolos.Add(Iden);
                             TokensLinea[ContadorToken] = Resultado[1];
 
@@ -164,7 +164,7 @@ namespace ProgramaLexico
                             Identificador Iden = new Identificador();
                             Iden.Numero = ContadorID;
                             Iden.Descripcion = "BLN_" + ContadorID;
-                            Iden.TipoDato = "Booleano";
+                            Iden.TipoDato = "bool";
                             Iden.Valor = bool.Parse(Cadena);
                             TablaSimbolos.Add(Iden);
                             TokensLinea[ContadorToken] = Resultado[1];
