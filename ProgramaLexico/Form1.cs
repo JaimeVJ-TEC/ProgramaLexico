@@ -57,6 +57,7 @@ namespace ProgramaLexico
             LlenarTokens();
             LlenarErrores();
             MarcarErrores();
+            AsignarTDIdentificador();
             LlenarID();
         }
 
@@ -84,96 +85,106 @@ namespace ProgramaLexico
 
                     if (Resultado[0] == "Acepta")
                     {
-                        if (Resultado[1] == "ID Valido.")
+                        Identificador Iden = new Identificador();
+
+                        switch (Resultado[1])
                         {
-                            bool existe = false;
-                            string Identificador = Cadena.Replace(" ", "");
+                            case "ID Valido.":
+                                bool existe = false;
+                                string Identificador = Cadena.Replace(" ", "");
 
-                            foreach (Identificador id in TablaSimbolos)
-                            {
-                                if (id.Descripcion == Identificador)
+                                foreach (Identificador id in TablaSimbolos)
                                 {
-                                    existe = true;
-                                    TokensLinea[ContadorToken] = "ID" + id.Numero;
-                                    break;
+                                    if (id.Descripcion == Identificador)
+                                    {
+                                        existe = true;
+                                        TokensLinea[ContadorToken] = "ID" + id.Numero;
+                                        break;
+                                    }
                                 }
-                            }
 
-                            if (!existe)
-                            {
-                                Identificador Iden = new Identificador();
+                                if (!existe)
+                                {
+                                    Iden.Numero = ContadorID;
+                                    Iden.Descripcion = Identificador;
+                                    TablaSimbolos.Add(Iden);
+
+                                    TokensLinea[ContadorToken] = "ID" + ContadorID;
+
+                                    ContadorID++;
+                                }
+                            break;
+
+                            case "CNE":
                                 Iden.Numero = ContadorID;
-                                Iden.Descripcion = Identificador;
+                                Iden.Descripcion = "CNE_" + ContadorID;
+                                Iden.TipoDato = "int";
+                                Iden.Valor = int.Parse(Cadena);
                                 TablaSimbolos.Add(Iden);
-
-                                TokensLinea[ContadorToken] = "ID" + ContadorID;
+                                TokensLinea[ContadorToken] = Resultado[1];
 
                                 ContadorID++;
-                            }
-                        }
-                        else if(Resultado[1] == "CNE")
-                        {
-                            Identificador Iden = new Identificador();
-                            Iden.Numero = ContadorID;
-                            Iden.Descripcion = "CNE_"+ContadorID;
-                            Iden.TipoDato = "int";
-                            Iden.Valor = int.Parse(Cadena);
-                            TablaSimbolos.Add(Iden);
-                            TokensLinea[ContadorToken] = Resultado[1];
+                                break;
 
-                            ContadorID++;
-                        }
-                        else if (Resultado[1] == "CNR")
-                        {
-                            Identificador Iden = new Identificador();
-                            Iden.Numero = ContadorID;
-                            Iden.Descripcion = "CNR_" + ContadorID;
-                            Iden.TipoDato = "double";
-                            Iden.Valor = double.Parse(Cadena);
-                            TablaSimbolos.Add(Iden);
-                            TokensLinea[ContadorToken] = Resultado[1];
+                            case "CNR":
+                                Iden.Numero = ContadorID;
+                                Iden.Descripcion = "CNR_" + ContadorID;
+                                Iden.TipoDato = "double";
+                                Iden.Valor = double.Parse(Cadena);
+                                TablaSimbolos.Add(Iden);
+                                TokensLinea[ContadorToken] = Resultado[1];
 
-                            ContadorID++;
-                        }
-                        else if (Resultado[1] == "CNEX")
-                        {
-                            Identificador Iden = new Identificador();
-                            Iden.Numero = ContadorID;
-                            Iden.Descripcion = "CNEX_" + ContadorID;
-                            Iden.TipoDato = "double";
-                            Iden.Valor = double.Parse(Cadena);
-                            TablaSimbolos.Add(Iden);
-                            TokensLinea[ContadorToken] = Resultado[1];
+                                ContadorID++;
+                                break;
 
-                            ContadorID++;
-                        }
-                        else if (Resultado[1] == "CADENAS")
-                        {
-                            Identificador Iden = new Identificador();
-                            Iden.Numero = ContadorID;
-                            Iden.Descripcion = "CAD_" + ContadorID;
-                            Iden.TipoDato = "string";
-                            Iden.Valor = Cadena.Replace("\"","");
-                            TablaSimbolos.Add(Iden);
-                            TokensLinea[ContadorToken] = Resultado[1];
+                            case "CNEX":
+                                Iden.Numero = ContadorID;
+                                Iden.Descripcion = "CNEX_" + ContadorID;
+                                Iden.TipoDato = "double";
+                                Iden.Valor = double.Parse(Cadena);
+                                TablaSimbolos.Add(Iden);
+                                TokensLinea[ContadorToken] = Resultado[1];
 
-                            ContadorID++;
-                        }
-                        else if (Resultado[1] == "PR23" || Resultado[1] == "PR24")
-                        {
-                            Identificador Iden = new Identificador();
-                            Iden.Numero = ContadorID;
-                            Iden.Descripcion = "BLN_" + ContadorID;
-                            Iden.TipoDato = "bool";
-                            Iden.Valor = bool.Parse(Cadena);
-                            TablaSimbolos.Add(Iden);
-                            TokensLinea[ContadorToken] = Resultado[1];
+                                ContadorID++;
+                                break;
 
-                            ContadorID++;
-                        }
-                        else
-                        {
-                            TokensLinea[ContadorToken] = Resultado[1];
+                            case "CADENAS":
+                                Iden.Numero = ContadorID;
+                                Iden.Descripcion = "CAD_" + ContadorID;
+                                Iden.TipoDato = "string";
+                                Iden.Valor = Cadena.Replace("\"", "");
+                                TablaSimbolos.Add(Iden);
+                                TokensLinea[ContadorToken] = Resultado[1];
+
+                                ContadorID++;
+                                break;
+
+                            case "CHAR":
+                                Iden.Numero = ContadorID;
+                                Iden.Descripcion = "CHAR_" + ContadorID;
+                                Iden.TipoDato = "char";
+                                Iden.Valor = Cadena.Replace("\'", "");
+                                TablaSimbolos.Add(Iden);
+                                TokensLinea[ContadorToken] = Resultado[1];
+
+                                ContadorID++;
+                                break;
+
+                            case "PR23":
+                            case "PR24":
+                                Iden.Numero = ContadorID;
+                                Iden.Descripcion = "BLN_" + ContadorID;
+                                Iden.TipoDato = "bool";
+                                Iden.Valor = bool.Parse(Cadena);
+                                TablaSimbolos.Add(Iden);
+                                TokensLinea[ContadorToken] = Resultado[1];
+
+                                ContadorID++;
+                                break;
+
+                            default:
+                                TokensLinea[ContadorToken] = Resultado[1];
+                                break;
                         }
                     }
                     else if (Resultado[0] == "Error")
@@ -207,6 +218,57 @@ namespace ProgramaLexico
             }
 
             txtTokens.Text = TextoTokens;
+        }
+
+        public void AsignarTDIdentificador()
+        {
+            foreach(string[] arreglo in ArchivoTokens)
+            {
+                string cadenaAux = "";
+                foreach(string s in arreglo)
+                {
+                    string cadenaActual = s;
+
+                    if(cadenaActual.Contains("ID"))
+                    {
+                        foreach(Identificador ID in TablaSimbolos)
+                        {
+                            if(cadenaActual == "ID"+ID.Numero)
+                            {
+                                switch(cadenaAux)
+                                {
+                                    case "PR13":
+                                        ID.TipoDato = "int";
+                                        break;
+                                    case "PR14":
+                                        ID.TipoDato = "double";
+                                        break;
+                                    case "PR15":
+                                        ID.TipoDato = "float";
+                                        break;
+                                    case "PR16":
+                                        ID.TipoDato = "char";
+                                        break;
+                                    case "PR17":
+                                        ID.TipoDato = "string";
+                                        break;
+                                    case "PR18":
+                                        ID.TipoDato = "bool";
+                                        break;
+                                    case "PR19":
+                                        ID.TipoDato = "null";
+                                        break;
+                                    case "PR22":
+                                        ID.TipoDato = "void";
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    cadenaAux = cadenaActual;
+                }
+            }
         }
 
         public void LlenarErrores()
@@ -325,6 +387,7 @@ namespace ProgramaLexico
             return Matriz;
         }
 
+        #region Trato de las cadenas
         //Metodo nuevo que separa texto de entrada en "palabras"
         public string[] SepararCadenas(string Texto)
         {
@@ -353,7 +416,7 @@ namespace ProgramaLexico
                     else
                     {
                         Cierre = Texto.IndexOf(" ", Cierre + 2);
-                        ListaTemp.Add(Texto.Substring(0, Cierre+1));
+                        ListaTemp.Add(Texto.Substring(0, Cierre + 1));
                         ListaTemp.AddRange(SepararCadenas(Texto.Substring(Cierre, Texto.Length - Cierre)));
                     }
                 }
@@ -361,15 +424,33 @@ namespace ProgramaLexico
                 {
                     int Cierre = Texto.IndexOf('\"', 1);
 
-                    if (Texto.IndexOf(" ", 1) == 1)
-                    {
-                        ListaTemp.Add(Texto.Substring(0, 2));
-                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(2, Texto.Length - 2)));
-                    }
-                    else if (Cierre == -1)
+                    //if (Texto.IndexOf(" ", 1) == 1)
+                    //{
+                    //    ListaTemp.Add(Texto.Substring(0, 2));
+                    //    ListaTemp.AddRange(SepararCadenas(Texto.Substring(2, Texto.Length - 2)));
+                    //}
+                    //else 
+                    if (Cierre == -1)
                     {
                         Texto = Texto.Trim();
                         Texto += "\" ";
+                        ListaTemp.Add(Texto);
+                    }
+                    else
+                    {
+                        Cierre = Texto.IndexOf(" ", Cierre + 1);
+                        ListaTemp.Add(Texto.Substring(0, Cierre + 1));
+                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(Cierre, Texto.Length - Cierre)));
+                    }
+                }
+                else if (Texto[0] == '\'')
+                {
+                    int Cierre = Texto.IndexOf('\'', 1);
+
+                    if (Cierre == -1)
+                    {
+                        Texto = Texto.Trim();
+                        Texto += " ";
                         ListaTemp.Add(Texto);
                     }
                     else
@@ -487,6 +568,7 @@ namespace ProgramaLexico
 
             return Cadenas;
         }
+        #endregion
 
         //Devuelve si se acepta o es error
         public string[] EvaluarCadena(string Cadena)
