@@ -129,7 +129,8 @@ namespace ProgramaLexico
                             case "CNR":
                                 Iden.Numero = ContadorID;
                                 Iden.Descripcion = "CNR_" + ContadorID;
-                                Iden.TipoDato = "double";
+
+                                Iden.TipoDato = Cadena.Length < 7 ? "float" : "double";
                                 Iden.Valor = double.Parse(Cadena);
                                 TablaSimbolos.Add(Iden);
                                 TokensLinea[ContadorToken] = Resultado[1];
