@@ -46,6 +46,8 @@ namespace ProgramaLexico
             richTextBox1.ForeColor = Color.Black;
 
             richTextBox1.Font = txtCadena.Font;
+            richTextBox1.WordWrap = false;
+            txtCadena.WordWrap = false;
             txtCadena.Select();
             AgregarNumerosLinea();
 
