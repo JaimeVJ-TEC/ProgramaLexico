@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnalizadorLexico.cs" />
     <Compile Include="Celda.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Form1.cs">

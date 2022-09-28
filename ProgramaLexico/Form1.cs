@@ -16,25 +16,11 @@ namespace ProgramaLexico
 {
     public partial class Form1 : Form
     {
-        public Celda[,] MatrizTransicion;
-
-        public List<string[]> ArchivoTokens = new List<string[]>();
-
-        public List<Identificador> TablaSimbolos = new List<Identificador>();
-
-        public List<Error> Errores = new List<Error>();
-
-        public List<List<string>> ListaINS = new List<List<string>>();
-
-        public List<string>[] Tabla = new List<string>[2];
-
-        public Stack<string> TokenStack = new Stack<string>();
+        AnalizadorLexico AnalisisLexico = new AnalizadorLexico();
 
         public Form1()
         {
             InitializeComponent();
-
-            MatrizTransicion = LlenarMatriz();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -55,155 +41,11 @@ namespace ProgramaLexico
 
         private void btnEvaluar_Click(object sender, EventArgs e)
         {
-            EvaluarTexto();
+            AnalisisLexico.Analizar(txtCadena.Text);
             LlenarTokens();
             LlenarErrores();
             MarcarErrores();
-            AsignarTDIdentificador();
             LlenarID();
-        }
-
-        public void EvaluarTexto()
-        {
-            string Texto = txtCadena.Text;
-            string[] Lineas = SepararLineas(Texto);
-            int ContadorID = 0;
-            int ContadorLinea = 0;
-
-            ArchivoTokens = new List<string[]>();
-            TablaSimbolos = new List<Identificador>();
-            Errores = new List<Error>();
-
-            foreach (string Linea in Lineas)
-            {
-                string[] Cadenas = SepararCadenas(Linea);
-
-                string[] TokensLinea = new string[Cadenas.Length];
-                int ContadorToken = 0;
-
-                foreach (string Cadena in Cadenas)
-                {
-                    string[] Resultado = EvaluarCadena(Cadena);
-
-                    if (Resultado[0] == "Acepta")
-                    {
-                        Identificador Iden = new Identificador();
-
-                        switch (Resultado[1])
-                        {
-                            case "ID Valido.":
-                                bool existe = false;
-                                string Identificador = Cadena.Replace(" ", "");
-
-                                foreach (Identificador id in TablaSimbolos)
-                                {
-                                    if (id.Descripcion == Identificador)
-                                    {
-                                        existe = true;
-                                        TokensLinea[ContadorToken] = "ID" + id.Numero;
-                                        break;
-                                    }
-                                }
-
-                                if (!existe)
-                                {
-                                    Iden.Numero = ContadorID;
-                                    Iden.Descripcion = Identificador;
-                                    TablaSimbolos.Add(Iden);
-
-                                    TokensLinea[ContadorToken] = "ID" + ContadorID;
-
-                                    ContadorID++;
-                                }
-                            break;
-
-                            case "CNE":
-                                Iden.Numero = ContadorID;
-                                Iden.Descripcion = "CNE_" + ContadorID;
-                                Iden.TipoDato = "int";
-                                Iden.Valor = int.Parse(Cadena);
-                                TablaSimbolos.Add(Iden);
-                                TokensLinea[ContadorToken] = Resultado[1];
-
-                                ContadorID++;
-                                break;
-
-                            case "CNR":
-                                Iden.Numero = ContadorID;
-                                Iden.Descripcion = "CNR_" + ContadorID;
-
-                                Iden.TipoDato = Cadena.Length < 7 ? "float" : "double";
-                                Iden.Valor = double.Parse(Cadena);
-                                TablaSimbolos.Add(Iden);
-                                TokensLinea[ContadorToken] = Resultado[1];
-
-                                ContadorID++;
-                                break;
-
-                            case "CNEX":
-                                Iden.Numero = ContadorID;
-                                Iden.Descripcion = "CNEX_" + ContadorID;
-                                Iden.TipoDato = "double";
-                                Iden.Valor = double.Parse(Cadena);
-                                TablaSimbolos.Add(Iden);
-                                TokensLinea[ContadorToken] = Resultado[1];
-
-                                ContadorID++;
-                                break;
-
-                            case "CADENAS":
-                                Iden.Numero = ContadorID;
-                                Iden.Descripcion = "CAD_" + ContadorID;
-                                Iden.TipoDato = "string";
-                                Iden.Valor = Cadena.Replace("\"", "");
-                                TablaSimbolos.Add(Iden);
-                                TokensLinea[ContadorToken] = Resultado[1];
-
-                                ContadorID++;
-                                break;
-
-                            case "CHAR":
-                                Iden.Numero = ContadorID;
-                                Iden.Descripcion = "CHAR_" + ContadorID;
-                                Iden.TipoDato = "char";
-                                Iden.Valor = Cadena.Replace("\'", "");
-                                TablaSimbolos.Add(Iden);
-                                TokensLinea[ContadorToken] = Resultado[1];
-
-                                ContadorID++;
-                                break;
-
-                            case "PR23":
-                            case "PR24":
-                                Iden.Numero = ContadorID;
-                                Iden.Descripcion = "BLN_" + ContadorID;
-                                Iden.TipoDato = "bool";
-                                Iden.Valor = bool.Parse(Cadena);
-                                TablaSimbolos.Add(Iden);
-                                TokensLinea[ContadorToken] = Resultado[1];
-
-                                ContadorID++;
-                                break;
-
-                            default:
-                                TokensLinea[ContadorToken] = Resultado[1];
-                                break;
-                        }
-                    }
-                    else if (Resultado[0] == "Error")
-                    {
-                        Error error = new Error();
-                        error.Linea = ContadorLinea;
-                        error.Descripcion = Resultado[1];
-                        error.Cadena = Cadena;
-                        Errores.Add(error);
-                        TokensLinea[ContadorToken] = Resultado[0];
-                    }
-                    ContadorToken++;
-                }
-                ContadorLinea++;
-                ArchivoTokens.Add(TokensLinea);
-            }
         }
 
         public void LlenarTokens()
@@ -211,7 +53,7 @@ namespace ProgramaLexico
             txtTokens.Text = "";
             string TextoTokens = "";
 
-            foreach(string[] array in ArchivoTokens)
+            foreach(string[] array in AnalisisLexico.ArchivoTokens)
             {
                 foreach(string s in array)
                 {
@@ -223,61 +65,10 @@ namespace ProgramaLexico
             txtTokens.Text = TextoTokens;
         }
 
-        public void AsignarTDIdentificador()
-        {
-            foreach(string[] arreglo in ArchivoTokens)
-            {
-                string cadenaAux = "";
-                foreach(string s in arreglo)
-                {
-                    string cadenaActual = s;
-
-                    if(cadenaActual.Contains("ID"))
-                    {
-                        foreach(Identificador ID in TablaSimbolos)
-                        {
-                            if(cadenaActual == "ID"+ID.Numero)
-                            {
-                                switch(cadenaAux)
-                                {
-                                    case "PR13":
-                                        ID.TipoDato = "int";
-                                        break;
-                                    case "PR14":
-                                        ID.TipoDato = "double";
-                                        break;
-                                    case "PR15":
-                                        ID.TipoDato = "float";
-                                        break;
-                                    case "PR16":
-                                        ID.TipoDato = "char";
-                                        break;
-                                    case "PR17":
-                                        ID.TipoDato = "string";
-                                        break;
-                                    case "PR18":
-                                        ID.TipoDato = "bool";
-                                        break;
-                                    case "PR19":
-                                        ID.TipoDato = "null";
-                                        break;
-                                    case "PR22":
-                                        ID.TipoDato = "void";
-                                        break;
-                                }
-                            }
-                        }
-                    }
-
-                    cadenaAux = cadenaActual;
-                }
-            }
-        }
-
         public void LlenarErrores()
         {
             dtgErrores.Rows.Clear();
-            foreach(Error e in Errores)
+            foreach(Error e in AnalisisLexico.Errores)
             {
                 dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
             }
@@ -291,7 +82,7 @@ namespace ProgramaLexico
             txtCadena.SelectionLength = txtCadena.Text.Length;
             txtCadena.SelectionColor = Color.Black;
 
-            foreach (Error e in Errores)
+            foreach (Error e in AnalisisLexico.Errores)
             {
                 string cadena = e.Cadena.Trim();
                 Aux = txtCadena.Text.IndexOf(cadena);
@@ -324,290 +115,10 @@ namespace ProgramaLexico
         public void LlenarID()
         {
             dtgIdentificadores.Rows.Clear();
-            foreach(Identificador id in TablaSimbolos)
+            foreach(Identificador id in AnalisisLexico.TablaSimbolos)
             {
                 dtgIdentificadores.Rows.Add(id.Numero, id.Descripcion, id.TipoDato, id.Valor);
             }
-        }
-
-        /// <summary>
-        /// Metodo que llena la matriz y magia negra
-        /// </summary>
-        /// <returns></returns>
-        public Celda[,] LlenarMatriz()
-        {
-            SqlConnection cnn = new SqlConnection(@"Data Source=JAIMEPC\MSSQLSERVER01;Database=Automatas;Integrated Security=True");
-            SqlCommand cmd = new SqlCommand(@"SELECT * FROM BD$", cnn);
-            DataTable dataTable = new DataTable();
-
-            try
-            {
-                cnn.Open();
-                SqlDataAdapter Adapter = new SqlDataAdapter(cmd);
-                Adapter.Fill(dataTable);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Problema con la conexion a la base de datos","Error");
-            }
-            finally
-            {
-                cnn.Close();
-            }
-
-            Celda[,] Matriz = new Celda[dataTable.Rows.Count,dataTable.Columns.Count];
-
-            for (int i = 0; i < dataTable.Rows.Count; i++)
-            {
-                for (int j = 0; j < dataTable.Columns.Count; j++)
-                {
-                    Celda c = new Celda();
-
-                    if (dataTable.Rows[i][j] != System.DBNull.Value)
-                    {
-                        if (dataTable.Rows[i][j] is string)
-                        {
-                            int tmp;
-
-                            if (int.TryParse((string)dataTable.Rows[i][j], out tmp))
-                            {
-                                c.Numero = tmp;
-                            }
-                            else
-                            {
-                                c.Contenido = (string)dataTable.Rows[i][j];
-                            }
-                        }
-                        else
-                        {
-                            c.Numero = (int)(double)dataTable.Rows[i][j];
-                        }
-                    }
-                    Matriz[i, j] = c;
-                }
-            }
-
-            return Matriz;
-        }
-
-        #region Trato de las cadenas
-        //Metodo nuevo que separa texto de entrada en "palabras"
-        public string[] SepararCadenas(string Texto)
-        {
-            Texto = Texto.Replace("\n", " ");
-            Texto = Texto.Trim();
-            Texto += " ";
-
-            List<string> ListaTemp = new List<string>();
-
-            if (Texto != "" && Texto != " ")
-            {
-                if (Texto.Substring(0, 2) == "//")
-                {
-                    int FinCadena = Texto.Length;
-                    ListaTemp.Add(Texto.Substring(0, FinCadena));
-                }
-                else if (Texto.Substring(0, 2) == "/*")
-                {
-                    int Cierre = Texto.IndexOf("*/", 2);
-                    if (Cierre == -1)
-                    {
-                        Texto = Texto.Trim();
-                        Texto += "*/ ";
-                        ListaTemp.Add(Texto);
-                    }
-                    else
-                    {
-                        Cierre = Texto.IndexOf(" ", Cierre + 2);
-                        ListaTemp.Add(Texto.Substring(0, Cierre + 1));
-                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(Cierre, Texto.Length - Cierre)));
-                    }
-                }
-                else if (Texto[0] == '\"')
-                {
-                    int Cierre = Texto.IndexOf('\"', 1);
-
-                    //if (Texto.IndexOf(" ", 1) == 1)
-                    //{
-                    //    ListaTemp.Add(Texto.Substring(0, 2));
-                    //    ListaTemp.AddRange(SepararCadenas(Texto.Substring(2, Texto.Length - 2)));
-                    //}
-                    //else 
-                    if (Cierre == -1)
-                    {
-                        Texto = Texto.Trim();
-                        Texto += "\" ";
-                        ListaTemp.Add(Texto);
-                    }
-                    else
-                    {
-                        Cierre = Texto.IndexOf(" ", Cierre + 1);
-                        ListaTemp.Add(Texto.Substring(0, Cierre + 1));
-                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(Cierre, Texto.Length - Cierre)));
-                    }
-                }
-                else if (Texto[0] == '\'')
-                {
-                    int Cierre = Texto.IndexOf('\'', 1);
-
-                    if (Cierre == -1)
-                    {
-                        Texto = Texto.Trim();
-                        Texto += " ";
-                        ListaTemp.Add(Texto);
-                    }
-                    else
-                    {
-                        Cierre = Texto.IndexOf(" ", Cierre + 1);
-                        ListaTemp.Add(Texto.Substring(0, Cierre + 1));
-                        ListaTemp.AddRange(SepararCadenas(Texto.Substring(Cierre, Texto.Length - Cierre)));
-                    }
-                }
-                else
-                {
-                    int FinCadena = Texto.IndexOf(" ") + 1;
-                    ListaTemp.Add(Texto.Substring(0, FinCadena));
-                    ListaTemp.AddRange(SepararCadenas(Texto.Substring(FinCadena, Texto.Length - FinCadena)));
-                }
-            }
-            return ListaTemp.ToArray();
-        }
-
-        //Metodo Viejo
-        public string[] SepararCadenasS(string Texto)
-        {
-            Texto = Texto.Replace("\n", " ");
-            Texto = Texto.Trim();
-            Texto += " ";
-
-            List<string> ListaTemp = new List<string>();
-            string[] Cadenas = Regex.Split(Texto, @"(?<=[ ])");
-
-            //IFs necesarios para separar correctamente los comentarios y cadenas
-            if (Texto.IndexOf("//") != -1)
-            {
-                int InicioCom = Texto.IndexOf("//");
-                string NoCom = Texto.Substring(0, InicioCom);
-                string Comentario = Texto.Substring(InicioCom, Texto.Length - InicioCom);
-
-                ListaTemp.AddRange(SepararCadenas(NoCom));
-                ListaTemp.Add(Comentario.Replace(" ", " "));
-                Cadenas = ListaTemp.ToArray();
-            }
-            else if (Texto.IndexOf("/*") != -1)
-            {
-                int InicioCom = Texto.IndexOf("/*");
-                int FinCom = Texto.IndexOf("*/", InicioCom + 1);
-                string NoCadena = "";
-                if (FinCom != -1)
-                    NoCadena = Texto.Substring(0, InicioCom);
-                string Cadena = "";
-                string CadenaDer = "";
-                ListaTemp.AddRange(SepararCadenas(NoCadena));
-
-                if (FinCom == -1)
-                {
-                    Cadena = Texto;
-                    Cadena = Cadena.Trim();
-                    Cadena += " ";
-                    ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
-                }
-                else
-                {
-                    int SigEspacio = Texto.IndexOf(" ", FinCom + 1);
-                    Cadena = Texto.Substring(InicioCom, SigEspacio + 1 - InicioCom);
-                    ListaTemp.Add(Cadena);
-                    CadenaDer = Texto.Substring(SigEspacio, Texto.Length - SigEspacio);
-                    ListaTemp.AddRange(SepararCadenas(CadenaDer));
-                }
-
-                Cadenas = ListaTemp.ToArray();
-            }
-            else if (Texto.IndexOf("\"") != -1)
-            {
-                int InicioCom = Texto.IndexOf("\"");
-                int FinCom = Texto.IndexOf("\"", InicioCom + 1);
-                string NoCadena = "";
-                if(FinCom != -1)
-                    NoCadena = Texto.Substring(0, InicioCom);
-                string Cadena = "";
-                string CadenaDer = "";
-                ListaTemp.AddRange(SepararCadenas(NoCadena));
-
-                if (FinCom== -1)
-                {
-                    //Cadena = Texto.Substring(InicioCom, Texto.Length-1);
-                    //Cadena = Cadena.Insert(InicioCom + 1, " ");
-                    //Cadena = Cadena.Insert(InicioCom, " ");
-                    Cadena = Texto;
-                    Cadena = Cadena.Trim();
-                    Cadena += " ";
-                    ListaTemp.AddRange(Regex.Split(Cadena, @"(?<=[ ])"));
-                }
-                else
-                {
-                    int SigEspacio = Texto.IndexOf(" ", FinCom + 1);
-                    Cadena = Texto.Substring(InicioCom, SigEspacio+1 - InicioCom);
-                    ListaTemp.Add(Cadena);
-                    CadenaDer = Texto.Substring(SigEspacio, Texto.Length - SigEspacio);
-                    string[] TextoDer = SepararCadenas(CadenaDer);
-                    ListaTemp.AddRange(SepararCadenas(CadenaDer));
-                }
-
-                Cadenas = ListaTemp.ToArray();
-            }
-
-            Cadenas = Cadenas.Where(x => !string.IsNullOrEmpty(x)).ToArray();
-            Cadenas = Cadenas.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
-
-            return Cadenas;
-        }
-
-        //Metodo que separa todo el texto en lineas
-        public string[] SepararLineas(string Texto)
-        {
-            Texto = Texto + " ";
-            string[] Cadenas = Texto.Split('\n');
-
-            return Cadenas;
-        }
-        #endregion
-
-        //Devuelve si se acepta o es error
-        public string[] EvaluarCadena(string Cadena)
-        {
-            int Fila = 0;
-            int Contador = 0;
-
-            bool Estado = true;
-
-            string[] Resultado = new string[2];
-
-            while(Estado)
-            {
-                int NumeroSimbolo = (int)Cadena[Contador];
-
-                if (NumeroSimbolo < 32 || NumeroSimbolo > 126)
-                {
-                    Resultado[0] = "Error";
-                    Resultado[1] = "Simbolo no definido";
-                    Estado = false;
-                }
-                else
-                {
-                    Fila = MatrizTransicion[Fila, NumeroSimbolo - 31].Numero;
-                    if (MatrizTransicion[Fila, 1].Contenido == "Acepta" || MatrizTransicion[Fila, 1].Contenido == "Error")
-                    {
-                        Resultado[0] = MatrizTransicion[Fila, 1].Contenido;
-                        Resultado[1] = MatrizTransicion[Fila, 0].Contenido;
-                        Estado = false;
-                    }
-                }
-
-                Contador++;
-            }
-
-            return Resultado;
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
