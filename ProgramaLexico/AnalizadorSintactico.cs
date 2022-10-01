@@ -150,6 +150,7 @@ namespace ProgramaLexico
                         Linea = ReemplazarArreglo(Linea, Resultado, Enumerable.Range(PosicionActual, CantidadTokens).ToArray());
                         PosicionActual = 0;
                         CantidadTokens = Linea.Length;
+                        break;
                     }
                 }
             }
@@ -192,26 +193,26 @@ namespace ProgramaLexico
 
         public string[] ReemplazarArreglo(string[] Cadena, string Palabra, int[] indices)
         {
-            string[] NuevoArreglo = new string[Cadena.Length - indices.Length + 1];
+            List<string> lista = new List<string>();
             bool Espacio = false;
 
-            for (int i = 0; i < NuevoArreglo.Length; i++)
+            for (int i = 0; i < Cadena.Length; i++)
             {
                 if (indices.Contains(i))
                 {
                     if(Espacio == false)
                     {
-                        NuevoArreglo[i] = Palabra;
+                        lista.Add(Palabra);
                         Espacio = true;
                     }
                 }
                 else
                 {
-                    NuevoArreglo[i] = Cadena[i];
+                    lista.Add(Cadena[i]);
                 }
             }
 
-            return NuevoArreglo;
+            return lista.ToArray();
         }
     }
 }

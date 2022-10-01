@@ -64,6 +64,7 @@ namespace ProgramaLexico
             AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
             AnalisisSintax.Analizar();
             LlenarErroresSintax();
+            LlenarTokensGramatica();
         }
 
         public void LlenarTokens()
@@ -81,6 +82,23 @@ namespace ProgramaLexico
             }
 
             txtTokens.Text = TextoTokens;
+        }
+
+        public void LlenarTokensGramatica()
+        {
+            txtSintax.Text = "";
+            string TextoTokens = "";
+
+            foreach (string[] array in AnalisisSintax.ArchivoTokens)
+            {
+                foreach (string s in array)
+                {
+                    TextoTokens += " " + s;
+                }
+                TextoTokens += "\n";
+            }
+
+            txtSintax.Text = TextoTokens;
         }
 
         public void LlenarErrores()
