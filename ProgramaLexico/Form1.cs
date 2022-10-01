@@ -121,6 +121,7 @@ namespace ProgramaLexico
             }
         }
 
+        #region Cargar Y Guardar Archivos
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             SaveFileDialog dlg = new SaveFileDialog();
@@ -155,6 +156,7 @@ namespace ProgramaLexico
                 File.WriteAllText(dlg.FileName, txtTokens.Text);
             }
         }
+        #endregion
 
         #region GUI stuff
 

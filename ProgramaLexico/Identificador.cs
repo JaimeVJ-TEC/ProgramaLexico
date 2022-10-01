@@ -14,8 +14,8 @@ namespace ProgramaLexico
 
         public string TipoDato { get; set; }
 
+        //Tipo de dato  dinamico para que pueda ser cualquiera (funciona como en js)
         public dynamic Valor { get; set; }
 
-        //TODO Valor
     }
 }

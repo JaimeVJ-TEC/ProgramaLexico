@@ -49,17 +49,9 @@ namespace ProgramaLexico
             values.Add("PR24", "bool");
         }
 
-        public void Analizar(string cadena)
-        {
-            Texto = cadena;
-            LlenarMatriz();
-            EvaluarTexto();
-            AsignarTDIdentificador();
-        }
-
         public Celda[,] LlenarMatriz()
         {
-            SqlConnection cnn = new SqlConnection(@"Data Source=DESKTOP-ENTQP32;Database=Automatas;Integrated Security=True");
+            SqlConnection cnn = new SqlConnection(@"Data Source=JaimePC\MSSQLSERVER01;Database=Automatas;Integrated Security=True");
             SqlCommand cmd = new SqlCommand(@"SELECT * FROM BD$", cnn);
             DataTable dataTable = new DataTable();
 
@@ -111,6 +103,14 @@ namespace ProgramaLexico
             }
 
             return Matriz;
+        }
+
+        public void Analizar(string cadena)
+        {
+            Texto = cadena;
+            LlenarMatriz();
+            EvaluarTexto();
+            AsignarTDIdentificador();
         }
 
         public string[] EvaluarCadena(string Cadena)
