@@ -15,28 +15,13 @@ namespace ProgramaLexico
 
         public string[,] Gramaticas;
 
-        public List<Error> Errores;
+        public List<Error> Errores = new List<Error>();
 
         public void LlenarGramaticas()
         {
-            SqlConnection cnn = new SqlConnection(@"Data Source=JaimePC\MSSQLSERVER01;Database=Automatas;Integrated Security=True");
-            SqlCommand cmd = new SqlCommand(@"SELECT * FROM GR$", cnn);
-            DataTable dataTable = new DataTable();
+            Conexion cnn = new Conexion();
+            DataTable dataTable = cnn.Gramaticas();
 
-            try
-            {
-                cnn.Open();
-                SqlDataAdapter Adapter = new SqlDataAdapter(cmd);
-                Adapter.Fill(dataTable);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Problema con la conexion a la base de datos", "Error");
-            }
-            finally
-            {
-                cnn.Close();
-            }
 
             Gramaticas = new string[dataTable.Rows.Count, dataTable.Columns.Count];
 
@@ -113,6 +98,65 @@ namespace ProgramaLexico
         }
         **/
 
+        public void Analizar()
+        {
+            for (int i = 0; i < ArchivoTokens.Count; i++)
+            {
+                ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i]);
+
+                if(ArchivoTokens[i][0] != "S")
+                {
+                    Error error = new Error();
+                    error.Linea = i;
+                    error.Descripcion = "Error de sintaxis";
+                    Errores.Add(error);
+                }
+            }
+        }
+
+        public string[] ReducirLinea(string[] Linea)
+        {
+            string Resultado = "";
+            int PosicionActual = 0;
+            int CantidadTokens = Linea.Length;
+
+            while(Resultado != "S" && Resultado != "Error sintaxis")
+            {
+                Resultado = ReducirCadena(Linea.SubArray(PosicionActual, CantidadTokens));
+
+                while (PosicionActual + CantidadTokens <= Linea.Length)
+                {
+                    if (Resultado == "Error")
+                    {
+                        if (CantidadTokens == 1 && PosicionActual == Linea.Length-1)
+                        {
+                            Resultado = "Error sintaxis";
+                            break;
+                        }
+                        else if(PosicionActual != Linea.Length - 1 && PosicionActual + CantidadTokens == Linea.Length)
+                        {
+                            PosicionActual = 0;
+                            CantidadTokens--;
+                            break;
+                        }
+                        else
+                        {
+                            PosicionActual++;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        Linea = ReemplazarArreglo(Linea, Resultado, Enumerable.Range(PosicionActual, CantidadTokens).ToArray());
+                        PosicionActual = 0;
+                        CantidadTokens = Linea.Length;
+                    }
+                }
+            }
+
+            return Linea;
+        }
+
         public string ReducirCadena(string[] Cadena)
         {
             string Linea = ConcatenarArreglo(Cadena);
@@ -122,14 +166,14 @@ namespace ProgramaLexico
 
             while(reducido == false)
             {
-                if (Linea == Gramaticas[1,i])
-                {
-                    Linea = Gramaticas[0, i];
-                    reducido = true;
-                }
-                else if(i >= Gramaticas.GetLength(1))
+                if (i >= Gramaticas.GetLength(0))
                 {
                     return "Error";
+                }
+                else if (Linea == Gramaticas[i,1])
+                {
+                    Linea = Gramaticas[i, 0].Trim();
+                    reducido = true;
                 }
                 i++;
             }
@@ -141,9 +185,33 @@ namespace ProgramaLexico
             string Linea = "";
             for (int i = 0; i < Cadena.Length; i++)
             {
-                Linea += Cadena[i].Contains("ID") ? "ID " : Cadena[i];
+                Linea += Cadena[i].Contains("ID") ? "ID " : Cadena[i] + " ";
             }
             return Linea.Trim();
+        }
+
+        public string[] ReemplazarArreglo(string[] Cadena, string Palabra, int[] indices)
+        {
+            string[] NuevoArreglo = new string[Cadena.Length - indices.Length + 1];
+            bool Espacio = false;
+
+            for (int i = 0; i < NuevoArreglo.Length; i++)
+            {
+                if (indices.Contains(i))
+                {
+                    if(Espacio == false)
+                    {
+                        NuevoArreglo[i] = Palabra;
+                        Espacio = true;
+                    }
+                }
+                else
+                {
+                    NuevoArreglo[i] = Cadena[i];
+                }
+            }
+
+            return NuevoArreglo;
         }
     }
 }

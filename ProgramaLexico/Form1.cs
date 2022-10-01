@@ -17,6 +17,7 @@ namespace ProgramaLexico
     public partial class Form1 : Form
     {
         AnalizadorLexico AnalisisLexico = new AnalizadorLexico();
+        AnalizadorSintactico AnalisisSintax;
 
         public Form1()
         {
@@ -25,11 +26,21 @@ namespace ProgramaLexico
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            this.BackColor = Color.FromArgb(45, 45, 48);
+            txtCadena.BackColor = Color.FromArgb(30, 30, 30);
+            txtTokens.BackColor = Color.FromArgb(30, 30, 30);
+            txtSintax.BackColor = Color.FromArgb(30, 30, 30);
+
+            txtCadena.ForeColor = Color.White;
+            txtTokens.ForeColor = Color.White;
+            txtSintax.ForeColor = Color.White;
+
+
             dtgErrores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgIdentificadores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            richTextBox1.BackColor = SystemColors.InactiveCaption;
-            richTextBox1.ForeColor = Color.Black;
+            richTextBox1.BackColor = Color.FromArgb(30, 30, 30);
+            richTextBox1.ForeColor = Color.FromArgb(40, 139, 162);
 
             richTextBox1.Font = txtCadena.Font;
             richTextBox1.WordWrap = false;
@@ -46,6 +57,13 @@ namespace ProgramaLexico
             LlenarErrores();
             MarcarErrores();
             LlenarID();
+        }
+
+        private void btnSintaxis_Click(object sender, EventArgs e)
+        {
+            AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
+            AnalisisSintax.Analizar();
+            LlenarErroresSintax();
         }
 
         public void LlenarTokens()
@@ -74,13 +92,27 @@ namespace ProgramaLexico
             }
         }
 
+        public void LlenarErroresSintax()
+        {
+            dtgErrores.Rows.Clear();
+
+            foreach (Error e in AnalisisLexico.Errores)
+            {
+                dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
+            }
+            foreach (Error e in AnalisisSintax.Errores)
+            {
+                dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
+            }
+        }
+
         public void MarcarErrores()
         {
             int Aux = 0;
 
             txtCadena.SelectionStart = 0;
             txtCadena.SelectionLength = txtCadena.Text.Length;
-            txtCadena.SelectionColor = Color.Black;
+            txtCadena.SelectionColor = Color.White;
 
             foreach (Error e in AnalisisLexico.Errores)
             {
@@ -104,11 +136,11 @@ namespace ProgramaLexico
 
                 txtCadena.SelectionStart = txtCadena.Text.Length;
                 txtCadena.SelectionLength = 1;
-                txtCadena.SelectionColor = Color.Black;
+                txtCadena.SelectionColor = Color.White;
             }
 
             txtCadena.SelectionStart = txtCadena.Text.Length;
-            txtCadena.SelectionColor = Color.Black;
+            txtCadena.SelectionColor = Color.White;
             txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Regular);
         }
 
@@ -243,5 +275,6 @@ namespace ProgramaLexico
         }
 
         #endregion
+
     }
 }

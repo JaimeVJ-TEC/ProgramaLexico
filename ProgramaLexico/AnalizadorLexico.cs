@@ -32,16 +32,16 @@ namespace ProgramaLexico
             TablaSimbolos = new List<Identificador>();
             Errores = new List<Error>();
 
-            tokens.Add("CNE","CNE_");
-            tokens.Add("CNR", "CNR_");
+            tokens.Add("CNEN","CNEN_");
+            tokens.Add("CNRE", "CNRE_");
             tokens.Add("CNEX", "CNEX_");
             tokens.Add("CADENAS", "CAD_");
             tokens.Add("CHAR", "CHAR_");
             tokens.Add("PR23", "BLN_");
             tokens.Add("PR24", "BLN_");
 
-            values.Add("CNE", "int");
-            values.Add("CNR", "double");
+            values.Add("CNEN", "int");
+            values.Add("CNRE", "double");
             values.Add("CNEX", "double");
             values.Add("CADENAS", "string");
             values.Add("CHAR", "char");
@@ -51,24 +51,8 @@ namespace ProgramaLexico
 
         public Celda[,] LlenarMatriz()
         {
-            SqlConnection cnn = new SqlConnection(@"Data Source=JaimePC\MSSQLSERVER01;Database=Automatas;Integrated Security=True");
-            SqlCommand cmd = new SqlCommand(@"SELECT * FROM BD$", cnn);
-            DataTable dataTable = new DataTable();
-
-            try
-            {
-                cnn.Open();
-                SqlDataAdapter Adapter = new SqlDataAdapter(cmd);
-                Adapter.Fill(dataTable);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Problema con la conexion a la base de datos", "Error");
-            }
-            finally
-            {
-                cnn.Close();
-            }
+            Conexion cnn = new Conexion();
+            DataTable dataTable = cnn.MatrizDeTransicion();
 
             Celda[,] Matriz = new Celda[dataTable.Rows.Count, dataTable.Columns.Count];
 
@@ -369,11 +353,11 @@ namespace ProgramaLexico
             identificador.TipoDato = values[Resultado];
             switch(Resultado)
             {
-                case "CNE":
+                case "CNEN":
                     identificador.Valor = int.Parse(cadena);
                     break;
 
-                case "CNR":
+                case "CNRE":
                     identificador.Valor = double.Parse(cadena);
                     break;
 
