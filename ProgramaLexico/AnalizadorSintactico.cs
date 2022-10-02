@@ -18,6 +18,9 @@ namespace ProgramaLexico
 
         public List<Error> Errores = new List<Error>();
 
+        int PorPasoLinea = 0;
+        bool PorPasBln = false;
+
         public void LlenarGramaticas()
         {
             Conexion cnn = new Conexion();
@@ -41,69 +44,13 @@ namespace ProgramaLexico
             LlenarGramaticas();
         }
 
-        /**
-        public void Analizar()
-        {
-            foreach(string[] linea in ArchivoTokens)
-            {
-                int numTokens = linea.Length;
-                int numActual = linea.Length;
-
-                for (int i = linea.Length - 1; i >= 0; i--)
-                {
-                    for (int j = 0; j < linea.Length; j++)
-                    {
-
-                    }
-                }
-            }
-        }
-
-        public void ReducirLineas()
-        {
-            int posActual = 0;
-            int cantTokens = 0;
-            string Resultado = "";
-
-            foreach(string[] Linea in ArchivoTokens)
-            {
-                cantTokens = Linea.Length;
-                posActual = 0;
-                
-                while(Resultado != "S")
-                {
-                    posActual = 0;
-                    while(posActual + cantTokens <= Linea.Length)
-                    {
-                        Resultado = ReducirCadena(Linea.SubArray(posActual,cantTokens));
-                        if (Resultado == "Error")
-                        {
-                            if(cantTokens == 1 && posActual == Linea.Length)
-                            {
-                                Resultado = "Error de sintaxis";
-                                    break;
-                            }
-
-                            cantTokens--;
-                            break;
-                        }
-                        else
-                        {
-
-                        }
-
-                        posActual++;
-                    }
-                }
-            }
-        }
-        **/
-
         public void Analizar()
         {
             for (int i = 0; i < ArchivoTokens.Count; i++)
             {
-                ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i]);
+                if (ArchivoTokens[i].Length == 0)
+                    continue;
+                ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i],false);
 
                 if(ArchivoTokens[i][0] != "S")
                 {
@@ -115,7 +62,31 @@ namespace ProgramaLexico
             }
         }
 
-        public string[] ReducirLinea(string[] Linea)
+        public bool AnalizarPorPaso()
+        {
+            ArchivoTokens[PorPasoLinea] = ReducirLinea(ArchivoTokens[PorPasoLinea], true);
+
+            if (ArchivoTokens[PorPasoLinea][0] != "S" && PorPasBln)
+            {
+                Error error = new Error();
+                error.Linea = PorPasoLinea;
+                error.Descripcion = "Error de sintaxis";
+                Errores.Add(error);
+                PorPasoLinea++;
+
+                if (PorPasoLinea == ArchivoTokens.Count)
+                    return true;
+                else
+                    return false;
+            }
+            else if(PorPasBln)
+            {
+                PorPasoLinea++;
+            }
+            return true;
+        }
+
+        public string[] ReducirLinea(string[] Linea, bool Paso)
         {
             string Resultado = "";
             int PosicionActual = 0;
@@ -127,11 +98,13 @@ namespace ProgramaLexico
 
                 while (PosicionActual + CantidadTokens <= Linea.Length)
                 {
+                    PorPasBln = true;
                     if (Resultado == "Error")
                     {
                         if (CantidadTokens == 1 && PosicionActual == Linea.Length-1)
                         {
                             Resultado = "Error sintaxis";
+                            PorPasBln = true;
                             break;
                         }
                         else if(PosicionActual != Linea.Length - 1 && PosicionActual + CantidadTokens == Linea.Length)
@@ -152,6 +125,12 @@ namespace ProgramaLexico
                         Debug.WriteLine(ConcatenarArreglo(Linea));
                         PosicionActual = 0;
                         CantidadTokens = Linea.Length;
+
+                        if(Paso)
+                        {
+                            return Linea;
+                        }
+
                         break;
                     }
                 }

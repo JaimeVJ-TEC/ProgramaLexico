@@ -18,6 +18,7 @@ namespace ProgramaLexico
     {
         AnalizadorLexico AnalisisLexico = new AnalizadorLexico();
         AnalizadorSintactico AnalisisSintax;
+        bool PasoPorPaso = true;
 
         public Form1()
         {
@@ -57,6 +58,7 @@ namespace ProgramaLexico
             LlenarErrores();
             MarcarErrores();
             LlenarID();
+            AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
         }
 
         private void btnSintaxis_Click(object sender, EventArgs e)
@@ -65,6 +67,17 @@ namespace ProgramaLexico
             AnalisisSintax.Analizar();
             LlenarErroresSintax();
             LlenarTokensGramatica();
+        }
+
+        private void btnPasoPorPaso_Click(object sender, EventArgs e)
+        {
+            if (PasoPorPaso)
+            {
+                AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
+                AnalisisSintax.AnalizarPorPaso();
+                LlenarErroresSintax();
+                LlenarTokensGramatica();
+            }
         }
 
         public void LlenarTokens()
@@ -162,6 +175,44 @@ namespace ProgramaLexico
             txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Regular);
         }
 
+        public void MarcarErroresSintax()
+        {
+            int Aux = 0;
+
+            txtCadena.SelectionStart = 0;
+            txtCadena.SelectionLength = txtCadena.Text.Length;
+            txtCadena.SelectionColor = Color.White;
+
+            foreach (Error e in AnalisisSintax.Errores)
+            {
+                string cadena = txtCadena.Lines[e.Linea];
+                Aux = txtCadena.Text.IndexOf(cadena);
+                txtCadena.SelectionStart = Aux;
+                txtCadena.SelectionLength = txtCadena.Lines[e.Linea].Length;
+
+                if (txtCadena.SelectionColor == Color.Red)
+                {
+                    bool Marcado = true;
+                    while (Marcado)
+                    {
+                        Aux = txtCadena.Text.IndexOf(cadena, Aux + cadena.Length);
+                        txtCadena.SelectionStart = Aux;
+                        Marcado = txtCadena.SelectionColor == Color.Orange;
+                    }
+                }
+
+                txtCadena.SelectionColor = Color.Red;
+
+                txtCadena.SelectionStart = txtCadena.Text.Length;
+                txtCadena.SelectionLength = 1;
+                txtCadena.SelectionColor = Color.White;
+            }
+
+            txtCadena.SelectionStart = txtCadena.Text.Length;
+            txtCadena.SelectionColor = Color.White;
+            txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Regular);
+        }
+
         public void LlenarID()
         {
             dtgIdentificadores.Rows.Clear();
@@ -204,6 +255,19 @@ namespace ProgramaLexico
             if (dlg.ShowDialog() == DialogResult.OK)
             {
                 File.WriteAllText(dlg.FileName, txtTokens.Text);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog opfd = new OpenFileDialog();
+            opfd.Filter = "txt files (*.txt)|*.txt";
+            opfd.FilterIndex = 1;
+            opfd.RestoreDirectory = true;
+
+            if (opfd.ShowDialog() == DialogResult.OK)
+            {
+                txtTokens.Text = File.ReadAllText(opfd.FileName);
             }
         }
         #endregion
@@ -293,6 +357,5 @@ namespace ProgramaLexico
         }
 
         #endregion
-
     }
 }

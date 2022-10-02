@@ -52,6 +52,7 @@ namespace ProgramaLexico
             this.txtSintax = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnSintaxis = new System.Windows.Forms.Button();
+            this.btnPasoPorPaso = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgIdentificadores)).BeginInit();
             this.SuspendLayout();
@@ -75,7 +76,6 @@ namespace ProgramaLexico
             this.txtCadena.ForeColor = System.Drawing.SystemColors.Window;
             this.txtCadena.Location = new System.Drawing.Point(36, 39);
             this.txtCadena.Name = "txtCadena";
-            this.txtCadena.ShortcutsEnabled = false;
             this.txtCadena.ShowSelectionMargin = true;
             this.txtCadena.Size = new System.Drawing.Size(295, 405);
             this.txtCadena.TabIndex = 2;
@@ -298,6 +298,7 @@ namespace ProgramaLexico
             this.button1.TabIndex = 20;
             this.button1.Text = "Cargar Archivo de Tokens";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnSintaxis
             // 
@@ -310,12 +311,24 @@ namespace ProgramaLexico
             this.btnSintaxis.UseVisualStyleBackColor = true;
             this.btnSintaxis.Click += new System.EventHandler(this.btnSintaxis_Click);
             // 
+            // btnPasoPorPaso
+            // 
+            this.btnPasoPorPaso.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPasoPorPaso.Location = new System.Drawing.Point(669, 450);
+            this.btnPasoPorPaso.Name = "btnPasoPorPaso";
+            this.btnPasoPorPaso.Size = new System.Drawing.Size(97, 39);
+            this.btnPasoPorPaso.TabIndex = 22;
+            this.btnPasoPorPaso.Text = "Sintaxis Paso por Paso";
+            this.btnPasoPorPaso.UseVisualStyleBackColor = true;
+            this.btnPasoPorPaso.Click += new System.EventHandler(this.btnPasoPorPaso_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GrayText;
             this.ClientSize = new System.Drawing.Size(1150, 675);
+            this.Controls.Add(this.btnPasoPorPaso);
             this.Controls.Add(this.btnSintaxis);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label5);
@@ -369,6 +382,7 @@ namespace ProgramaLexico
         private System.Windows.Forms.RichTextBox txtSintax;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnSintaxis;
+        private System.Windows.Forms.Button btnPasoPorPaso;
     }
 }
 

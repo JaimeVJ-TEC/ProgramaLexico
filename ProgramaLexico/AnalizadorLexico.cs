@@ -32,16 +32,16 @@ namespace ProgramaLexico
             TablaSimbolos = new List<Identificador>();
             Errores = new List<Error>();
 
-            tokens.Add("CNEN","CNEN_");
-            tokens.Add("CNRE", "CNRE_");
+            tokens.Add("CNE","CNE_");
+            tokens.Add("CNR", "CNR_");
             tokens.Add("CNEX", "CNEX_");
             tokens.Add("CADENAS", "CAD_");
             tokens.Add("CHAR", "CHAR_");
             tokens.Add("PR23", "BLN_");
             tokens.Add("PR24", "BLN_");
 
-            values.Add("CNEN", "int");
-            values.Add("CNRE", "double");
+            values.Add("CNE", "int");
+            values.Add("CNR", "double");
             values.Add("CNEX", "double");
             values.Add("CADENAS", "string");
             values.Add("CHAR", "char");
@@ -353,11 +353,11 @@ namespace ProgramaLexico
             identificador.TipoDato = values[Resultado];
             switch(Resultado)
             {
-                case "CNEN":
+                case "CNE":
                     identificador.Valor = int.Parse(cadena);
                     break;
 
-                case "CNRE":
+                case "CNR":
                     identificador.Valor = double.Parse(cadena);
                     break;
 
