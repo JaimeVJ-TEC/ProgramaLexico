@@ -12,7 +12,11 @@ namespace ProgramaLexico
 {
     public class AnalizadorSintactico
     {
+        public List<string[]> ArchivoTokensCopia;
+
         public List<string[]> ArchivoTokens;
+
+        public List<string[]> ArchivoTokensPorPaso;
 
         public string[,] Gramaticas;
 
@@ -40,12 +44,14 @@ namespace ProgramaLexico
 
         public AnalizadorSintactico(List<string[]> Tokens)
         {
-            ArchivoTokens = Tokens;
+            ArchivoTokensCopia = Tokens;
+            ArchivoTokensPorPaso = Tokens;
             LlenarGramaticas();
         }
 
         public void Analizar()
         {
+            ArchivoTokens = ArchivoTokensCopia;
             for (int i = 0; i < ArchivoTokens.Count; i++)
             {
                 if (ArchivoTokens[i].Length == 0)
@@ -62,28 +68,40 @@ namespace ProgramaLexico
             }
         }
 
-        public bool AnalizarPorPaso()
+        public void AnalizarPorPaso()
         {
-            ArchivoTokens[PorPasoLinea] = ReducirLinea(ArchivoTokens[PorPasoLinea], true);
+            if (PorPasoLinea >= ArchivoTokensPorPaso.Count)
+            {
+                MessageBox.Show("Archivo de tokens vacio");
+                return;
+            }
 
-            if (ArchivoTokens[PorPasoLinea][0] != "S" && PorPasBln)
+            if (PorPasoLinea >= ArchivoTokensPorPaso.Count)
+            {
+                MessageBox.Show("Analisis sintactico finalizado");
+                return;
+            }
+
+            if (ArchivoTokensPorPaso[PorPasoLinea].Length == 0)
+            {
+                PorPasoLinea++;
+                return;
+            }
+
+            ArchivoTokensPorPaso[PorPasoLinea] = ReducirLinea(ArchivoTokensPorPaso[PorPasoLinea], true);
+
+            if (ArchivoTokensPorPaso[PorPasoLinea][0] != "S" && PorPasBln)
             {
                 Error error = new Error();
                 error.Linea = PorPasoLinea;
                 error.Descripcion = "Error de sintaxis";
                 Errores.Add(error);
                 PorPasoLinea++;
-
-                if (PorPasoLinea == ArchivoTokens.Count)
-                    return true;
-                else
-                    return false;
             }
-            else if(PorPasBln)
+            else if (ArchivoTokensPorPaso[PorPasoLinea][0] == "S")
             {
                 PorPasoLinea++;
             }
-            return true;
         }
 
         public string[] ReducirLinea(string[] Linea, bool Paso)
@@ -98,7 +116,7 @@ namespace ProgramaLexico
 
                 while (PosicionActual + CantidadTokens <= Linea.Length)
                 {
-                    PorPasBln = true;
+                    PorPasBln = false;
                     if (Resultado == "Error")
                     {
                         if (CantidadTokens == 1 && PosicionActual == Linea.Length-1)

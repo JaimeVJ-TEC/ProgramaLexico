@@ -53,6 +53,7 @@ namespace ProgramaLexico
             this.button1 = new System.Windows.Forms.Button();
             this.btnSintaxis = new System.Windows.Forms.Button();
             this.btnPasoPorPaso = new System.Windows.Forms.Button();
+            this.btnLimpiarSintax = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgIdentificadores)).BeginInit();
             this.SuspendLayout();
@@ -60,7 +61,7 @@ namespace ProgramaLexico
             // btnEvaluar
             // 
             this.btnEvaluar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEvaluar.Location = new System.Drawing.Point(234, 450);
+            this.btnEvaluar.Location = new System.Drawing.Point(296, 450);
             this.btnEvaluar.Name = "btnEvaluar";
             this.btnEvaluar.Size = new System.Drawing.Size(80, 39);
             this.btnEvaluar.TabIndex = 3;
@@ -77,7 +78,7 @@ namespace ProgramaLexico
             this.txtCadena.Location = new System.Drawing.Point(36, 39);
             this.txtCadena.Name = "txtCadena";
             this.txtCadena.ShowSelectionMargin = true;
-            this.txtCadena.Size = new System.Drawing.Size(295, 405);
+            this.txtCadena.Size = new System.Drawing.Size(340, 405);
             this.txtCadena.TabIndex = 2;
             this.txtCadena.Text = "";
             this.txtCadena.WordWrap = false;
@@ -99,7 +100,7 @@ namespace ProgramaLexico
             // btnGuardar
             // 
             this.btnGuardar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Location = new System.Drawing.Point(120, 450);
+            this.btnGuardar.Location = new System.Drawing.Point(150, 450);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(86, 39);
             this.btnGuardar.TabIndex = 6;
@@ -114,18 +115,18 @@ namespace ProgramaLexico
             this.txtTokens.DetectUrls = false;
             this.txtTokens.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtTokens.ForeColor = System.Drawing.SystemColors.Window;
-            this.txtTokens.Location = new System.Drawing.Point(351, 39);
+            this.txtTokens.Location = new System.Drawing.Point(403, 39);
             this.txtTokens.Name = "txtTokens";
             this.txtTokens.ReadOnly = true;
             this.txtTokens.ShowSelectionMargin = true;
-            this.txtTokens.Size = new System.Drawing.Size(312, 360);
+            this.txtTokens.Size = new System.Drawing.Size(312, 405);
             this.txtTokens.TabIndex = 7;
             this.txtTokens.Text = "";
             // 
             // btnGuardarTokens
             // 
             this.btnGuardarTokens.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardarTokens.Location = new System.Drawing.Point(577, 405);
+            this.btnGuardarTokens.Location = new System.Drawing.Point(520, 450);
             this.btnGuardarTokens.Name = "btnGuardarTokens";
             this.btnGuardarTokens.Size = new System.Drawing.Size(86, 39);
             this.btnGuardarTokens.TabIndex = 8;
@@ -268,7 +269,7 @@ namespace ProgramaLexico
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Verdana", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(759, 13);
+            this.label5.Location = new System.Drawing.Point(735, 13);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(138, 18);
             this.label5.TabIndex = 19;
@@ -281,7 +282,7 @@ namespace ProgramaLexico
             this.txtSintax.DetectUrls = false;
             this.txtSintax.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSintax.ForeColor = System.Drawing.SystemColors.Window;
-            this.txtSintax.Location = new System.Drawing.Point(762, 39);
+            this.txtSintax.Location = new System.Drawing.Point(738, 39);
             this.txtSintax.Name = "txtSintax";
             this.txtSintax.ReadOnly = true;
             this.txtSintax.ShowSelectionMargin = true;
@@ -292,7 +293,7 @@ namespace ProgramaLexico
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(351, 405);
+            this.button1.Location = new System.Drawing.Point(403, 450);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(102, 39);
             this.button1.TabIndex = 20;
@@ -303,7 +304,7 @@ namespace ProgramaLexico
             // btnSintaxis
             // 
             this.btnSintaxis.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSintaxis.Location = new System.Drawing.Point(577, 450);
+            this.btnSintaxis.Location = new System.Drawing.Point(629, 450);
             this.btnSintaxis.Name = "btnSintaxis";
             this.btnSintaxis.Size = new System.Drawing.Size(86, 39);
             this.btnSintaxis.TabIndex = 21;
@@ -314,7 +315,7 @@ namespace ProgramaLexico
             // btnPasoPorPaso
             // 
             this.btnPasoPorPaso.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPasoPorPaso.Location = new System.Drawing.Point(669, 450);
+            this.btnPasoPorPaso.Location = new System.Drawing.Point(738, 405);
             this.btnPasoPorPaso.Name = "btnPasoPorPaso";
             this.btnPasoPorPaso.Size = new System.Drawing.Size(97, 39);
             this.btnPasoPorPaso.TabIndex = 22;
@@ -322,12 +323,24 @@ namespace ProgramaLexico
             this.btnPasoPorPaso.UseVisualStyleBackColor = true;
             this.btnPasoPorPaso.Click += new System.EventHandler(this.btnPasoPorPaso_Click);
             // 
+            // btnLimpiarSintax
+            // 
+            this.btnLimpiarSintax.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLimpiarSintax.Location = new System.Drawing.Point(951, 405);
+            this.btnLimpiarSintax.Name = "btnLimpiarSintax";
+            this.btnLimpiarSintax.Size = new System.Drawing.Size(97, 39);
+            this.btnLimpiarSintax.TabIndex = 23;
+            this.btnLimpiarSintax.Text = "Limpiar";
+            this.btnLimpiarSintax.UseVisualStyleBackColor = true;
+            this.btnLimpiarSintax.Click += new System.EventHandler(this.btnLimpiarSintax_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GrayText;
-            this.ClientSize = new System.Drawing.Size(1150, 675);
+            this.ClientSize = new System.Drawing.Size(1060, 675);
+            this.Controls.Add(this.btnLimpiarSintax);
             this.Controls.Add(this.btnPasoPorPaso);
             this.Controls.Add(this.btnSintaxis);
             this.Controls.Add(this.button1);
@@ -383,6 +396,7 @@ namespace ProgramaLexico
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnSintaxis;
         private System.Windows.Forms.Button btnPasoPorPaso;
+        private System.Windows.Forms.Button btnLimpiarSintax;
     }
 }
 

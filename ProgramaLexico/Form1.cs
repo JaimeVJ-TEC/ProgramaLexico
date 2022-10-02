@@ -18,7 +18,6 @@ namespace ProgramaLexico
     {
         AnalizadorLexico AnalisisLexico = new AnalizadorLexico();
         AnalizadorSintactico AnalisisSintax;
-        bool PasoPorPaso = true;
 
         public Form1()
         {
@@ -63,21 +62,49 @@ namespace ProgramaLexico
 
         private void btnSintaxis_Click(object sender, EventArgs e)
         {
-            AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
-            AnalisisSintax.Analizar();
-            LlenarErroresSintax();
-            LlenarTokensGramatica();
+            if (AnalisisLexico.Errores.Count == 0)
+            {
+                AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
+                AnalisisSintax.Analizar();
+                LlenarErroresSintax();
+                LlenarTokensGramatica(false);
+                MarcarErroresSintax();
+            }
+            else
+            {
+                MessageBox.Show("Corregir errores lexicos");
+            }
         }
 
         private void btnPasoPorPaso_Click(object sender, EventArgs e)
         {
-            if (PasoPorPaso)
+            if (AnalisisLexico.Errores.Count == 0)
             {
-                AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
-                AnalisisSintax.AnalizarPorPaso();
-                LlenarErroresSintax();
-                LlenarTokensGramatica();
+                if (AnalisisSintax is object)
+                {
+                    AnalisisSintax.AnalizarPorPaso();
+                    LlenarErroresSintax();
+                    LlenarTokensGramatica(true);
+                    MarcarErroresSintax();
+                }
+                else
+                {
+                    MessageBox.Show("Archivo de Tokens vacio");
+                }
             }
+            else
+            {
+                MessageBox.Show("Corregir errores lexicos");
+            }
+        }
+
+        private void btnLimpiarSintax_Click(object sender, EventArgs e)
+        {
+            AnalisisSintax = null;
+            txtSintax.Text = "";
+            AnalisisLexico.Analizar(txtCadena.Text);
+            AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
+            LlenarErroresSintax();
         }
 
         public void LlenarTokens()
@@ -97,20 +124,33 @@ namespace ProgramaLexico
             txtTokens.Text = TextoTokens;
         }
 
-        public void LlenarTokensGramatica()
+        public void LlenarTokensGramatica(bool Paso)
         {
             txtSintax.Text = "";
             string TextoTokens = "";
 
-            foreach (string[] array in AnalisisSintax.ArchivoTokens)
+            if (!Paso)
             {
-                foreach (string s in array)
+                foreach (string[] array in AnalisisSintax.ArchivoTokens)
                 {
-                    TextoTokens += " " + s;
+                    foreach (string s in array)
+                    {
+                        TextoTokens += " " + s;
+                    }
+                    TextoTokens += "\n";
                 }
-                TextoTokens += "\n";
             }
-
+            else
+            {
+                foreach (string[] array in AnalisisSintax.ArchivoTokensPorPaso)
+                {
+                    foreach (string s in array)
+                    {
+                        TextoTokens += " " + s;
+                    }
+                    TextoTokens += "\n";
+                }
+            }
             txtSintax.Text = TextoTokens;
         }
 
@@ -190,27 +230,8 @@ namespace ProgramaLexico
                 txtCadena.SelectionStart = Aux;
                 txtCadena.SelectionLength = txtCadena.Lines[e.Linea].Length;
 
-                if (txtCadena.SelectionColor == Color.Red)
-                {
-                    bool Marcado = true;
-                    while (Marcado)
-                    {
-                        Aux = txtCadena.Text.IndexOf(cadena, Aux + cadena.Length);
-                        txtCadena.SelectionStart = Aux;
-                        Marcado = txtCadena.SelectionColor == Color.Orange;
-                    }
-                }
-
-                txtCadena.SelectionColor = Color.Red;
-
-                txtCadena.SelectionStart = txtCadena.Text.Length;
-                txtCadena.SelectionLength = 1;
-                txtCadena.SelectionColor = Color.White;
+                txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Underline);
             }
-
-            txtCadena.SelectionStart = txtCadena.Text.Length;
-            txtCadena.SelectionColor = Color.White;
-            txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Regular);
         }
 
         public void LlenarID()
@@ -357,5 +378,6 @@ namespace ProgramaLexico
         }
 
         #endregion
+
     }
 }
