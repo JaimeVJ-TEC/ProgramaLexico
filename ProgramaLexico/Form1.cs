@@ -30,11 +30,18 @@ namespace ProgramaLexico
             txtCadena.BackColor = Color.FromArgb(30, 30, 30);
             txtTokens.BackColor = Color.FromArgb(30, 30, 30);
             txtSintax.BackColor = Color.FromArgb(30, 30, 30);
+            dtgIdentificadores.BackgroundColor = Color.FromArgb(62, 62, 62);
+            dtgErrores.BackgroundColor = Color.FromArgb(62, 62, 62);
 
             txtCadena.ForeColor = Color.White;
             txtTokens.ForeColor = Color.White;
             txtSintax.ForeColor = Color.White;
-
+            dtgIdentificadores.DefaultCellStyle.BackColor = Color.FromArgb(37, 37, 37);
+            dtgErrores.DefaultCellStyle.BackColor = Color.FromArgb(37, 37, 37);
+            dtgIdentificadores.DefaultCellStyle.ForeColor = Color.White;
+            dtgErrores.DefaultCellStyle.ForeColor = Color.White;
+            dtgIdentificadores.GridColor = Color.FromArgb(104,104,104);
+            dtgErrores.GridColor = Color.FromArgb(104, 104, 104);
 
             dtgErrores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dtgIdentificadores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

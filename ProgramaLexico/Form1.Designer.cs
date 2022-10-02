@@ -29,6 +29,7 @@ namespace ProgramaLexico
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnEvaluar = new System.Windows.Forms.Button();
             this.txtCadena = new System.Windows.Forms.RichTextBox();
             this.btnCargar = new System.Windows.Forms.Button();
@@ -359,6 +360,7 @@ namespace ProgramaLexico
             this.Controls.Add(this.btnCargar);
             this.Controls.Add(this.btnEvaluar);
             this.Controls.Add(this.txtCadena);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Lexico";
             this.Load += new System.EventHandler(this.Form1_Load);
