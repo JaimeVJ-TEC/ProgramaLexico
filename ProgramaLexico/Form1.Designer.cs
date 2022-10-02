@@ -58,6 +58,7 @@ namespace ProgramaLexico
             // 
             // btnEvaluar
             // 
+            this.btnEvaluar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEvaluar.Location = new System.Drawing.Point(234, 450);
             this.btnEvaluar.Name = "btnEvaluar";
             this.btnEvaluar.Size = new System.Drawing.Size(80, 39);
@@ -86,6 +87,7 @@ namespace ProgramaLexico
             // 
             // btnCargar
             // 
+            this.btnCargar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCargar.Location = new System.Drawing.Point(3, 450);
             this.btnCargar.Name = "btnCargar";
             this.btnCargar.Size = new System.Drawing.Size(86, 39);
@@ -96,6 +98,7 @@ namespace ProgramaLexico
             // 
             // btnGuardar
             // 
+            this.btnGuardar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardar.Location = new System.Drawing.Point(120, 450);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(86, 39);
@@ -121,6 +124,7 @@ namespace ProgramaLexico
             // 
             // btnGuardarTokens
             // 
+            this.btnGuardarTokens.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardarTokens.Location = new System.Drawing.Point(577, 405);
             this.btnGuardarTokens.Name = "btnGuardarTokens";
             this.btnGuardarTokens.Size = new System.Drawing.Size(86, 39);
@@ -287,18 +291,20 @@ namespace ProgramaLexico
             // 
             // button1
             // 
+            this.button1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Location = new System.Drawing.Point(351, 405);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(86, 39);
+            this.button1.Size = new System.Drawing.Size(102, 39);
             this.button1.TabIndex = 20;
             this.button1.Text = "Cargar Archivo de Tokens";
             this.button1.UseVisualStyleBackColor = true;
             // 
             // btnSintaxis
             // 
-            this.btnSintaxis.Location = new System.Drawing.Point(583, 450);
+            this.btnSintaxis.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSintaxis.Location = new System.Drawing.Point(577, 450);
             this.btnSintaxis.Name = "btnSintaxis";
-            this.btnSintaxis.Size = new System.Drawing.Size(80, 39);
+            this.btnSintaxis.Size = new System.Drawing.Size(86, 39);
             this.btnSintaxis.TabIndex = 21;
             this.btnSintaxis.Text = "Analizar Sintaxis";
             this.btnSintaxis.UseVisualStyleBackColor = true;

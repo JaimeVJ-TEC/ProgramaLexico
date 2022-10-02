@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace ProgramaLexico
 {
@@ -148,6 +149,7 @@ namespace ProgramaLexico
                     else
                     {
                         Linea = ReemplazarArreglo(Linea, Resultado, Enumerable.Range(PosicionActual, CantidadTokens).ToArray());
+                        Debug.WriteLine(ConcatenarArreglo(Linea));
                         PosicionActual = 0;
                         CantidadTokens = Linea.Length;
                         break;
