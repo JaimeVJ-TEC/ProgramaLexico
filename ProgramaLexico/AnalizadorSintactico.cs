@@ -58,7 +58,7 @@ namespace ProgramaLexico
                     continue;
                 ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i],false);
 
-                if(ArchivoTokens[i][0] != "S")
+                if(ConcatenarArreglo(ArchivoTokens[i]) != "S")
                 {
                     Error error = new Error();
                     error.Linea = i;
@@ -90,7 +90,7 @@ namespace ProgramaLexico
 
             ArchivoTokensPorPaso[PorPasoLinea] = ReducirLinea(ArchivoTokensPorPaso[PorPasoLinea], true);
 
-            if (ArchivoTokensPorPaso[PorPasoLinea][0] != "S" && PorPasBln)
+            if (ConcatenarArreglo(ArchivoTokensPorPaso[PorPasoLinea]) != "S" && PorPasBln)
             {
                 Error error = new Error();
                 error.Linea = PorPasoLinea;
