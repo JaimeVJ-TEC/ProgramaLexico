@@ -195,6 +195,7 @@ namespace ProgramaLexico
             foreach (Error e in AnalisisLexico.Errores)
             {
                 string cadena = e.Cadena.Trim();
+                cadena = cadena.Replace("\"", "");
                 Aux = txtCadena.Text.IndexOf(cadena);
                 txtCadena.SelectionStart = Aux;
                 txtCadena.SelectionLength = cadena.Length;
