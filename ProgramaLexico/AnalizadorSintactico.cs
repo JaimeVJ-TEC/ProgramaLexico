@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
 
 namespace ProgramaLexico
 {
@@ -42,11 +43,25 @@ namespace ProgramaLexico
             }
         }
 
+        //Metodo que llena las gramaticas por medio de un archivo txt ("gramaticas.txt")
+        public void LlenarGramaticastxt()
+        {
+            string[] lines = File.ReadAllLines("gramaticas.txt");
+            Gramaticas = new string[lines.GetLength(0), 2];
+
+            for (int i = 0; i < Gramaticas.GetLength(0); i++)
+            {
+                string[] aux = lines[i].Split('>');
+                Gramaticas[i,0] = aux[0].Trim();
+                Gramaticas[i, 1] = aux[1].Trim();
+            }
+        }
+
         public AnalizadorSintactico(List<string[]> Tokens)
         {
             ArchivoTokensCopia = Tokens;
             ArchivoTokensPorPaso = Tokens;
-            LlenarGramaticas();
+            LlenarGramaticastxt();
         }
 
         public void Analizar()
@@ -54,6 +69,8 @@ namespace ProgramaLexico
             ArchivoTokens = ArchivoTokensCopia;
             for (int i = 0; i < ArchivoTokens.Count; i++)
             {
+                ArchivoTokens[i] = ArchivoTokens[i].Where(val => val != "COMENTARIOS").ToArray();
+
                 if (ArchivoTokens[i].Length == 0)
                     continue;
                 ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i],false);
@@ -82,6 +99,7 @@ namespace ProgramaLexico
                 return;
             }
 
+            ArchivoTokensPorPaso[PorPasoLinea] = ArchivoTokensPorPaso[PorPasoLinea].Where(val => val != "COMENTARIOS").ToArray();
             if (ArchivoTokensPorPaso[PorPasoLinea].Length == 0)
             {
                 PorPasoLinea++;

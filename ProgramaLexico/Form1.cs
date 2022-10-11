@@ -71,6 +71,7 @@ namespace ProgramaLexico
         {
             if (AnalisisLexico.Errores.Count == 0)
             {
+                txtCadena.Font = new Font(txtCadena.Font, FontStyle.Regular);
                 AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
                 AnalisisSintax.Analizar();
                 LlenarErroresSintax();
