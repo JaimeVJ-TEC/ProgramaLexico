@@ -17,7 +17,7 @@ namespace ProgramaLexico
 
         public Conexion()
         {
-            Connection = new SqlConnection(@"Data Source=JaimePC\MSSQLSERVER01;Database=Automatas;Integrated Security=True");
+            Connection = new SqlConnection(@"Data Source=DESKTOP-ENTQP32;Database=Automatas;Integrated Security=True");
             CommandGramatica = new SqlCommand(@"SELECT * FROM AG$", Connection);
             CommandLexico = new SqlCommand(@"SELECT * FROM BD$", Connection);
         }

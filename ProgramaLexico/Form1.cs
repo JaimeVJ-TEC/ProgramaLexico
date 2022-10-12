@@ -196,7 +196,6 @@ namespace ProgramaLexico
             foreach (Error e in AnalisisLexico.Errores)
             {
                 string cadena = e.Cadena.Trim();
-                cadena = cadena.Replace("\"", "");
                 Aux = txtCadena.Text.IndexOf(cadena);
                 txtCadena.SelectionStart = Aux;
                 txtCadena.SelectionLength = cadena.Length;
@@ -226,6 +225,9 @@ namespace ProgramaLexico
 
         public void MarcarErroresSintax()
         {
+            txtCadena.SelectionStart = 0;
+            txtCadena.SelectionLength = txtCadena.Text.Length;
+            txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Regular);
             int Aux = 0;
 
             txtCadena.SelectionStart = 0;
