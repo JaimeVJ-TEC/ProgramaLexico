@@ -42,6 +42,7 @@ namespace ProgramaLexico
 
             values.Add("CNE", "int");
             values.Add("CNR", "double");
+            values.Add("CNRF", "float");
             values.Add("CNEX", "double");
             values.Add("CADENAS", "string");
             values.Add("CHAR", "char");
@@ -358,7 +359,15 @@ namespace ProgramaLexico
                     break;
 
                 case "CNR":
-                    identificador.Valor = double.Parse(cadena);
+                    if (cadena[cadena.Length - 2] == 'f')
+                    {
+                        identificador.Valor = float.Parse(cadena.Replace("f",""));
+                        identificador.TipoDato = "float";
+                    }
+                    else
+                    {
+                        identificador.Valor = double.Parse(cadena);
+                    }
                     break;
 
                 case "CNEX":
