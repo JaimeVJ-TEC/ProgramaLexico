@@ -18,6 +18,7 @@ namespace ProgramaLexico
     {
         AnalizadorLexico AnalisisLexico = new AnalizadorLexico();
         AnalizadorSintactico AnalisisSintax;
+        AnalizadorSemantico AnalisisSemantico;
 
         public Form1()
         {
@@ -30,6 +31,7 @@ namespace ProgramaLexico
             txtCadena.BackColor = Color.FromArgb(30, 30, 30);
             txtTokens.BackColor = Color.FromArgb(30, 30, 30);
             txtSintax.BackColor = Color.FromArgb(30, 30, 30);
+            txtSem.BackColor = Color.FromArgb(30, 30, 30);
             dtgIdentificadores.BackgroundColor = Color.FromArgb(62, 62, 62);
             dtgErrores.BackgroundColor = Color.FromArgb(62, 62, 62);
 
@@ -390,5 +392,27 @@ namespace ProgramaLexico
 
         #endregion
 
+        private void btnSem_Click(object sender, EventArgs e)
+        {
+            AnalisisSemantico = new AnalizadorSemantico(AnalisisLexico.ArchivoTokensNumero, AnalisisLexico.TablaSimbolos);
+            LlenarSemanticoTxt();
+        }
+
+        public void LlenarSemanticoTxt()
+        {
+            txtSem.Text = "";
+            string TextoTokens = "";
+
+            foreach (string[] array in AnalisisSemantico.ArchivoTokensTipos)
+            {
+                foreach (string s in array)
+                {
+                    TextoTokens += " " + s;
+                }
+                TextoTokens += "\n";
+            }
+
+            txtSem.Text = TextoTokens;
+        }
     }
 }

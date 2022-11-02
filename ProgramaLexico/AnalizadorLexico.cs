@@ -16,6 +16,8 @@ namespace ProgramaLexico
 
         public List<string[]> ArchivoTokens;
 
+        public List<string[]> ArchivoTokensNumero;
+
         public List<Identificador> TablaSimbolos;
 
         public List<Error> Errores;
@@ -42,7 +44,6 @@ namespace ProgramaLexico
 
             values.Add("CNE", "int");
             values.Add("CNR", "double");
-            values.Add("CNRF", "float");
             values.Add("CNEX", "double");
             values.Add("CADENAS", "string");
             values.Add("CHAR", "char");
@@ -224,6 +225,7 @@ namespace ProgramaLexico
             int ContadorLinea = 0;
 
             ArchivoTokens = new List<string[]>();
+            ArchivoTokensNumero = new List<string[]>();
             TablaSimbolos = new List<Identificador>();
             Errores = new List<Error>();
 
@@ -232,6 +234,7 @@ namespace ProgramaLexico
                 string[] Cadenas = SepararCadenas(Linea);
 
                 string[] TokensLinea = new string[Cadenas.Length];
+                string[] TokensLineaNumero = new string[Cadenas.Length];
                 int ContadorToken = 0;
 
                 foreach (string Cadena in Cadenas)
@@ -253,6 +256,7 @@ namespace ProgramaLexico
                                 {
                                     existe = true;
                                     TokensLinea[ContadorToken] = "ID" + id.Numero;
+                                    TokensLineaNumero[ContadorToken] = "ID" + id.Numero;
                                     break;
                                 }
                             }
@@ -264,6 +268,7 @@ namespace ProgramaLexico
                                 TablaSimbolos.Add(Iden);
 
                                 TokensLinea[ContadorToken] = "ID" + ContadorID;
+                                TokensLineaNumero[ContadorToken] = "ID" + ContadorID;
 
                                 ContadorID++;
                             }
@@ -273,11 +278,13 @@ namespace ProgramaLexico
                             Iden = CrearId(ContadorID, Resultado[1], Cadena);
                             TablaSimbolos.Add(Iden);
                             TokensLinea[ContadorToken] = Resultado[1];
+                            TokensLineaNumero[ContadorToken] = Iden.Descripcion;
                             ContadorID++;
                         }
                         else
                         {
                             TokensLinea[ContadorToken] = Resultado[1];
+                            TokensLineaNumero[ContadorToken] = Resultado[1];
                         }
                     }
                     else if (Resultado[0] == "Error")
@@ -288,11 +295,13 @@ namespace ProgramaLexico
                         error.Cadena = Cadena;
                         Errores.Add(error);
                         TokensLinea[ContadorToken] = Resultado[0];
+                        TokensLineaNumero[ContadorToken] = Resultado[0];
                     }
                     ContadorToken++;
                 }
                 ContadorLinea++;
                 ArchivoTokens.Add(TokensLinea);
+                ArchivoTokensNumero.Add(TokensLineaNumero);
             }
         }
 
@@ -316,10 +325,10 @@ namespace ProgramaLexico
                                     case "PR13":
                                         ID.TipoDato = "int";
                                         break;
-                                    case "PR14":
+                                    case "PR15":
                                         ID.TipoDato = "double";
                                         break;
-                                    case "PR15":
+                                    case "PR14":
                                         ID.TipoDato = "float";
                                         break;
                                     case "PR16":
