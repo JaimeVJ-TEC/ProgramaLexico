@@ -32,7 +32,7 @@ namespace ProgramaLexico
                     if(Tipos.TryGetValue(linea[i].Substring(0, 3),out bool value) || linea[i].Substring(0,2) == "ID")
                     {
                         int numero = int.Parse(linea[i][linea[i].Length - 1].ToString());
-                        linea[i] = TablaSimbolosSem[numero].TipoDato;
+                        linea[i] = TablaSimbolosSem[numero].TipoDato == null ? "SINTIPO" : TablaSimbolosSem[numero].TipoDato;
                     }
 
                 }
