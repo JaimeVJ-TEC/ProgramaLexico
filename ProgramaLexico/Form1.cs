@@ -67,6 +67,7 @@ namespace ProgramaLexico
             MarcarErrores();
             LlenarID();
             AnalisisSintax = new AnalizadorSintactico(AnalisisLexico.ArchivoTokens);
+            AnalisisSemantico = new AnalizadorSemantico(AnalisisLexico.ArchivoTokensNumero, AnalisisLexico.TablaSimbolos);
         }
 
         private void btnSintaxis_Click(object sender, EventArgs e)
@@ -117,6 +118,51 @@ namespace ProgramaLexico
             LlenarErroresSintax();
         }
 
+        private void btnSem_Click(object sender, EventArgs e)
+        {
+            if (AnalisisSintax.Errores.Count == 0 && AnalisisLexico.Errores.Count == 0)
+            {
+                AnalisisSemantico = new AnalizadorSemantico(AnalisisLexico.ArchivoTokensNumero, AnalisisLexico.TablaSimbolos);
+                AnalisisSemantico.Analizar();
+                LlenarTokensSemantico(false);
+                LlenarErroresSemantico();
+            }
+            else
+            {
+                MessageBox.Show("Corregir errores previos");
+            }
+        }
+
+        private void btnSemPaso_Click(object sender, EventArgs e)
+        {
+            if (AnalisisSintax.Errores.Count == 0 && AnalisisLexico.Errores.Count == 0)
+            {
+                if (AnalisisSemantico is object)
+                {
+                    AnalisisSemantico.AnalizarPorPaso();
+                    LlenarTokensSemantico(true);
+                    LlenarErroresSemantico();
+                }
+                else
+                {
+                    MessageBox.Show("Archivo de Tokens vacio");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Corregir errores previos");
+            }
+        }
+
+        private void btnLimpiarSem_Click(object sender, EventArgs e)
+        {
+            AnalisisSemantico = null;
+            AnalisisLexico.Analizar(txtCadena.Text);
+            txtSem.Text = "";
+            AnalisisSemantico = new AnalizadorSemantico(AnalisisLexico.ArchivoTokensNumero,AnalisisLexico.TablaSimbolos);
+            LlenarErroresSemantico();
+        }
+
         public void LlenarTokens()
         {
             txtTokens.Text = "";
@@ -164,6 +210,38 @@ namespace ProgramaLexico
             txtSintax.Text = TextoTokens;
         }
 
+        public void LlenarTokensSemantico(bool Paso)
+        {
+            txtSem.Text = "";
+            string TextoTokens = "";
+
+            if (!Paso)
+            {
+                foreach (string[] array in AnalisisSemantico.ArchivoTokens)
+                {
+                    foreach (string s in array)
+                    {
+                        TextoTokens += " " + s;
+                    }
+                    TextoTokens += "\n";
+                }
+            }
+            else
+            {
+                foreach (string[] array in AnalisisSemantico.ArchivoTokensPorPaso)
+                {
+                    foreach (string s in array)
+                    {
+                        TextoTokens += " " + s;
+                    }
+                    TextoTokens += "\n";
+                }
+            }
+
+            txtSem.Text = TextoTokens;
+        }
+
+        #region LlenarErrores
         public void LlenarErrores()
         {
             dtgErrores.Rows.Clear();
@@ -177,16 +255,24 @@ namespace ProgramaLexico
         {
             dtgErrores.Rows.Clear();
 
-            foreach (Error e in AnalisisLexico.Errores)
-            {
-                dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
-            }
             foreach (Error e in AnalisisSintax.Errores)
             {
                 dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
             }
         }
 
+        public void LlenarErroresSemantico()
+        {
+            dtgErrores.Rows.Clear();
+
+            foreach (Error e in AnalisisSemantico.Errores)
+            {
+                dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
+            }
+        }
+        #endregion
+
+        #region MarcarErrores
         public void MarcarErrores()
         {
             int Aux = 0;
@@ -246,6 +332,7 @@ namespace ProgramaLexico
                 txtCadena.SelectionFont = new Font(txtCadena.SelectionFont, FontStyle.Underline);
             }
         }
+        #endregion
 
         public void LlenarID()
         {
@@ -392,33 +479,5 @@ namespace ProgramaLexico
 
         #endregion
 
-        private void btnSem_Click(object sender, EventArgs e)
-        {
-            AnalisisSemantico = new AnalizadorSemantico(AnalisisLexico.ArchivoTokensNumero, AnalisisLexico.TablaSimbolos);
-            LlenarSemanticoTxt();
-        }
-
-        public void LlenarSemanticoTxt()
-        {
-            txtSem.Text = "";
-            string TextoTokens = "";
-
-            foreach (string[] array in AnalisisSemantico.ArchivoTokens)
-            {
-                foreach (string s in array)
-                {
-                    TextoTokens += " " + s;
-                }
-                TextoTokens += "\n";
-            }
-
-            txtSem.Text = TextoTokens;
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            AnalisisSemantico.Analizar();
-            LlenarSemanticoTxt();
-        }
     }
 }

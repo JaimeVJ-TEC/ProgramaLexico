@@ -58,7 +58,8 @@ namespace ProgramaLexico
             this.txtSem = new System.Windows.Forms.RichTextBox();
             this.btnSem = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnSemPaso = new System.Windows.Forms.Button();
+            this.btnLimpiarSem = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgIdentificadores)).BeginInit();
             this.SuspendLayout();
@@ -357,9 +358,9 @@ namespace ProgramaLexico
             // btnSem
             // 
             this.btnSem.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSem.Location = new System.Drawing.Point(935, 451);
+            this.btnSem.Location = new System.Drawing.Point(924, 451);
             this.btnSem.Name = "btnSem";
-            this.btnSem.Size = new System.Drawing.Size(86, 39);
+            this.btnSem.Size = new System.Drawing.Size(97, 39);
             this.btnSem.TabIndex = 25;
             this.btnSem.Text = "Analisis Semantico";
             this.btnSem.UseVisualStyleBackColor = true;
@@ -376,16 +377,27 @@ namespace ProgramaLexico
             this.label6.TabIndex = 26;
             this.label6.Text = "Analisis Semantico";
             // 
-            // button2
+            // btnSemPaso
             // 
-            this.button2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(935, 496);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(86, 39);
-            this.button2.TabIndex = 27;
-            this.button2.Text = "Analisis Semantico";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnSemPaso.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSemPaso.Location = new System.Drawing.Point(1039, 405);
+            this.btnSemPaso.Name = "btnSemPaso";
+            this.btnSemPaso.Size = new System.Drawing.Size(106, 39);
+            this.btnSemPaso.TabIndex = 27;
+            this.btnSemPaso.Text = "Semantico Paso por Paso";
+            this.btnSemPaso.UseVisualStyleBackColor = true;
+            this.btnSemPaso.Click += new System.EventHandler(this.btnSemPaso_Click);
+            // 
+            // btnLimpiarSem
+            // 
+            this.btnLimpiarSem.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnLimpiarSem.Location = new System.Drawing.Point(1235, 406);
+            this.btnLimpiarSem.Name = "btnLimpiarSem";
+            this.btnLimpiarSem.Size = new System.Drawing.Size(97, 39);
+            this.btnLimpiarSem.TabIndex = 28;
+            this.btnLimpiarSem.Text = "Limpiar";
+            this.btnLimpiarSem.UseVisualStyleBackColor = true;
+            this.btnLimpiarSem.Click += new System.EventHandler(this.btnLimpiarSem_Click);
             // 
             // Form1
             // 
@@ -393,7 +405,8 @@ namespace ProgramaLexico
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GrayText;
             this.ClientSize = new System.Drawing.Size(1344, 675);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnLimpiarSem);
+            this.Controls.Add(this.btnSemPaso);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnSem);
             this.Controls.Add(this.txtSem);
@@ -458,7 +471,8 @@ namespace ProgramaLexico
         private System.Windows.Forms.RichTextBox txtSem;
         private System.Windows.Forms.Button btnSem;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnSemPaso;
+        private System.Windows.Forms.Button btnLimpiarSem;
     }
 }
 

@@ -20,6 +20,8 @@ namespace ProgramaLexico
 
         int PorPasoLinea = 0;
         bool PorPasBln = false;
+        string[] TokensValidos = new string[] {"S","SWITCH", "WHILE", "CFOR", "CASE", "IF","ELIF", "ELSE", 
+                                                "BEGIN", "END", "BREAK", "OPEN", "CLOSE", "NOAP", "DO"};
 
         public void LlenarSemanticatxt()
         {
@@ -58,17 +60,22 @@ namespace ProgramaLexico
 
         public AnalizadorSemantico(List<string[]> ArchivoTokensConNumeros, List<Identificador> TablaSimbolos)
         {
-            ArchivoTokens = ArchivoTokensConNumeros;
+            ArchivoTokensCopia = new List<string[]>();
+            foreach(string[] Linea in ArchivoTokensConNumeros)
+            {
+                string[] Copia = new string[Linea.Length];
+                Linea.CopyTo(Copia, 0);
+                ArchivoTokensCopia.Add(Copia);
+            }
+
             TablaSimbolosSem = TablaSimbolos;
-            ArchivoTokens = ConvertirTipos(ArchivoTokensConNumeros);
-            ArchivoTokensCopia = ArchivoTokens;
+            ArchivoTokensPorPaso = ArchivoTokensCopia;
+            ArchivoTokens = ConvertirTipos(ArchivoTokensCopia);
             LlenarSemanticatxt();
         }
 
         public void Analizar()
         {
-            ArchivoTokens = ArchivoTokensCopia;
-            ArchivoTokensPorPaso = ArchivoTokensCopia;
             for (int i = 0; i < ArchivoTokens.Count; i++)
             {
                 ArchivoTokens[i] = ArchivoTokens[i].Where(val => val != "COMENTARIOS").ToArray();
@@ -77,15 +84,13 @@ namespace ProgramaLexico
                     continue;
                 ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i], false);
 
-                /**
-                if (ConcatenarArreglo(ArchivoTokens[i]) != "S")
+                if (!TokensValidos.Contains(ConcatenarArreglo(ArchivoTokens[i])))
                 {
                     Error error = new Error();
                     error.Linea = i;
-                    error.Descripcion = "Error de sintaxis";
+                    error.Descripcion = "Error de Tipo";
                     Errores.Add(error);
                 }
-                **/
             }
         }
 
@@ -99,7 +104,7 @@ namespace ProgramaLexico
 
             if (PorPasoLinea >= ArchivoTokensPorPaso.Count)
             {
-                MessageBox.Show("Analisis sintactico finalizado");
+                MessageBox.Show("Analisis semantico finalizado");
                 return;
             }
 
@@ -112,15 +117,15 @@ namespace ProgramaLexico
 
             ArchivoTokensPorPaso[PorPasoLinea] = ReducirLinea(ArchivoTokensPorPaso[PorPasoLinea], true);
 
-            if (ConcatenarArreglo(ArchivoTokensPorPaso[PorPasoLinea]) != "S" && PorPasBln)
+            if (!TokensValidos.Contains(ConcatenarArreglo(ArchivoTokens[PorPasoLinea])) && PorPasBln)
             {
                 Error error = new Error();
                 error.Linea = PorPasoLinea;
-                error.Descripcion = "Error de sintaxis";
+                error.Descripcion = "Error de Tipo";
                 Errores.Add(error);
                 PorPasoLinea++;
             }
-            else if (ArchivoTokensPorPaso[PorPasoLinea][0] == "S")
+            else if (TokensValidos.Contains(ArchivoTokensPorPaso[PorPasoLinea][0]))
             {
                 PorPasoLinea++;
             }
@@ -132,7 +137,7 @@ namespace ProgramaLexico
             int PosicionActual = 0;
             int CantidadTokens = Linea.Length;
 
-            while (Resultado != "S" && Resultado != "Error sintaxis")
+            while (Resultado != "S" && Resultado != "Error semantica")
             {
                 Resultado = ReducirCadena(Linea.SubArray(PosicionActual, CantidadTokens));
 
@@ -143,7 +148,7 @@ namespace ProgramaLexico
                     {
                         if (CantidadTokens == 1 && PosicionActual == Linea.Length - 1)
                         {
-                            Resultado = "Error sintaxis";
+                            Resultado = "Error semantica";
                             PorPasBln = true;
                             break;
                         }
