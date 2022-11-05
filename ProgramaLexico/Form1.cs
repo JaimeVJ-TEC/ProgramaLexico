@@ -403,7 +403,7 @@ namespace ProgramaLexico
             txtSem.Text = "";
             string TextoTokens = "";
 
-            foreach (string[] array in AnalisisSemantico.ArchivoTokensTipos)
+            foreach (string[] array in AnalisisSemantico.ArchivoTokens)
             {
                 foreach (string s in array)
                 {
@@ -413,6 +413,12 @@ namespace ProgramaLexico
             }
 
             txtSem.Text = TextoTokens;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            AnalisisSemantico.Analizar();
+            LlenarSemanticoTxt();
         }
     }
 }
