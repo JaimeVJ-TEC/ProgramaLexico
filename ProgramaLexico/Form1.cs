@@ -163,6 +163,7 @@ namespace ProgramaLexico
             LlenarErroresSemantico();
         }
 
+        #region LlenarTokens
         public void LlenarTokens()
         {
             txtTokens.Text = "";
@@ -240,6 +241,7 @@ namespace ProgramaLexico
 
             txtSem.Text = TextoTokens;
         }
+        #endregion
 
         #region LlenarErrores
         public void LlenarErrores()
@@ -267,7 +269,10 @@ namespace ProgramaLexico
 
             foreach (Error e in AnalisisSemantico.Errores)
             {
-                dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
+                if(e.Linea == -1)
+                    dtgErrores.Rows.Add("", e.Descripcion);
+                else
+                    dtgErrores.Rows.Add(e.Linea + 1, e.Descripcion);
             }
         }
         #endregion

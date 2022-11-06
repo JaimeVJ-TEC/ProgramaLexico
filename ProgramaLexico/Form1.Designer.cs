@@ -77,6 +77,7 @@ namespace ProgramaLexico
             // 
             // txtCadena
             // 
+            this.txtCadena.AcceptsTab = true;
             this.txtCadena.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtCadena.DetectUrls = false;
             this.txtCadena.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -178,7 +179,7 @@ namespace ProgramaLexico
             this.dtgErrores.Location = new System.Drawing.Point(496, 519);
             this.dtgErrores.Name = "dtgErrores";
             this.dtgErrores.RowHeadersVisible = false;
-            this.dtgErrores.Size = new System.Drawing.Size(355, 144);
+            this.dtgErrores.Size = new System.Drawing.Size(525, 144);
             this.dtgErrores.TabIndex = 13;
             // 
             // Linea

@@ -17,23 +17,27 @@ namespace ProgramaLexico
         public List<Identificador> TablaSimbolosSem;
         public List<Error> Errores = new List<Error>();
         public string[,] Semantica;
+        public string[,] ReglasVertical;
 
+        int OpenCant = -1;
+        List<string> InstruccionesComp = new List<string>();
         int PorPasoLinea = 0;
         bool PorPasBln = false;
         string[] TokensValidos = new string[] {"S","SWITCH", "WHILE", "CFOR", "CASE", "IF","ELIF", "ELSE", 
                                                 "BEGIN", "END", "BREAK", "OPEN", "CLOSE", "NOAP", "DO"};
 
-        public void LlenarSemanticatxt()
+        public string[,] LlenarSemanticatxt(string FileName)
         {
-            string[] lines = File.ReadAllLines("rsemanticas.txt");
-            Semantica = new string[lines.GetLength(0), 2];
+            string[] lines = File.ReadAllLines(FileName);
+            string[,] SemanticaT = new string[lines.GetLength(0), 2];
 
-            for (int i = 0; i < Semantica.GetLength(0); i++)
+            for (int i = 0; i < SemanticaT.GetLength(0); i++)
             {
                 string[] aux = lines[i].Split('>');
-                Semantica[i, 0] = aux[0].Trim();
-                Semantica[i, 1] = aux[1].Trim();
+                SemanticaT[i, 0] = aux[0].Trim();
+                SemanticaT[i, 1] = aux[1].Trim();
             }
+            return SemanticaT;
         }
 
         public List<string[]> ConvertirTipos(List<string[]> ArchivoTokensConNumeros)
@@ -71,7 +75,8 @@ namespace ProgramaLexico
             TablaSimbolosSem = TablaSimbolos;
             ArchivoTokensPorPaso = ArchivoTokensCopia;
             ArchivoTokens = ConvertirTipos(ArchivoTokensCopia);
-            LlenarSemanticatxt();
+            Semantica = LlenarSemanticatxt("rsemanticas.txt");
+            ReglasVertical = LlenarSemanticatxt("semanticavertical.txt");
         }
 
         public void Analizar()
@@ -82,13 +87,77 @@ namespace ProgramaLexico
 
                 if (ArchivoTokens[i].Length == 0)
                     continue;
-                ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i], false);
+                ArchivoTokens[i] = ReducirLinea(ArchivoTokens[i], false,true);
 
                 if (!TokensValidos.Contains(ConcatenarArreglo(ArchivoTokens[i])))
                 {
                     Error error = new Error();
                     error.Linea = i;
                     error.Descripcion = "Error de Tipo";
+                    Errores.Add(error);
+                }
+            }
+
+            if (Errores.Count == 0)
+            {
+                AnalisisVertical();
+            }
+        }
+
+        public void AnalisisVertical()
+        {
+            OpenCant = -1;
+
+            //Convetimos las S que se generaron en el analisis horizontal a CON para empezar el analisis Vertical
+            for (int i = 0; i < ArchivoTokens.Count; i++)
+            {
+                for (int j = 0; j < ArchivoTokens[i].Length; j++)
+                {
+                    if(ArchivoTokens[i][j]=="S")
+                    {
+                        ArchivoTokens[i][j] = "CON";
+                    }
+                }
+            }
+
+            //Analisis vertical JELU
+            string[] ArregloJELU = new string[ArchivoTokens.Count];
+            for (int i = 0; i < ArchivoTokens.Count; i++)
+            {
+                ArregloJELU[i] = ConcatenarArreglo(ArchivoTokens[i]);
+            }
+            ArregloJELU = ReducirLinea(ArregloJELU, false, false);
+
+            if(ArregloJELU[0] != "S")
+            {
+                int CantError = 0;
+                int Contador = 1;
+
+                foreach (string s in ArregloJELU)
+                {
+                    Contador++;
+                    if (s.Contains("ER"))
+                    {
+                        CantError++;
+                        Error error = new Error();
+                        error.Linea = -1;
+                        error.Descripcion = "Error Instruccion: " + s.Substring(2) + " no se abrio";
+                        Errores.Add(error);
+                    }
+                }
+                
+                if(OpenCant>=0 && CantError == 0)
+                {
+                    Error error = new Error();
+                    error.Linea = -1;
+                    error.Descripcion = "Error Instruccion: "+InstruccionesComp[OpenCant]+" no se cerro";
+                    Errores.Add(error);
+                }
+                else if (CantError < 0)
+                {
+                    Error error = new Error();
+                    error.Linea = -1;
+                    error.Descripcion = "Error instruccion compuesta se cerro pero no se abrio";
                     Errores.Add(error);
                 }
             }
@@ -115,7 +184,7 @@ namespace ProgramaLexico
                 return;
             }
 
-            ArchivoTokensPorPaso[PorPasoLinea] = ReducirLinea(ArchivoTokensPorPaso[PorPasoLinea], true);
+            ArchivoTokensPorPaso[PorPasoLinea] = ReducirLinea(ArchivoTokensPorPaso[PorPasoLinea], true, true);
 
             if (!TokensValidos.Contains(ConcatenarArreglo(ArchivoTokens[PorPasoLinea])) && PorPasBln)
             {
@@ -131,15 +200,15 @@ namespace ProgramaLexico
             }
         }
 
-        public string[] ReducirLinea(string[] Linea, bool Paso)
+        public string[] ReducirLinea(string[] Linea, bool Paso, bool Horizontal)
         {
             string Resultado = "";
             int PosicionActual = 0;
             int CantidadTokens = Linea.Length;
 
-            while (Resultado != "S" && Resultado != "Error semantica")
+            while (Resultado != "S" && Resultado != "Error semantico")
             {
-                Resultado = ReducirCadena(Linea.SubArray(PosicionActual, CantidadTokens));
+                Resultado = ReducirCadena(Linea.SubArray(PosicionActual, CantidadTokens),Horizontal);
 
                 while (PosicionActual + CantidadTokens <= Linea.Length)
                 {
@@ -148,7 +217,7 @@ namespace ProgramaLexico
                     {
                         if (CantidadTokens == 1 && PosicionActual == Linea.Length - 1)
                         {
-                            Resultado = "Error semantica";
+                            Resultado = "Error semantico";
                             PorPasBln = true;
                             break;
                         }
@@ -166,6 +235,22 @@ namespace ProgramaLexico
                     }
                     else
                     {
+                        if (!Horizontal)
+                        {
+                            if (Resultado == "CONC" || Resultado == "S")
+                            {
+                                OpenCant--;
+                            }
+                            else if (Resultado.Contains("ER"))
+                            {
+
+                            }
+                            else if (Resultado != "CON" && Resultado != "CONC" && Resultado != "CLOSE")
+                            {
+                                OpenCant++;
+                                InstruccionesComp.Add(Linea[PosicionActual]);
+                            }
+                        }
                         Linea = ReemplazarArreglo(Linea, Resultado, Enumerable.Range(PosicionActual, CantidadTokens).ToArray());
                         Debug.WriteLine(ConcatenarArreglo(Linea));
                         PosicionActual = 0;
@@ -184,25 +269,44 @@ namespace ProgramaLexico
             return Linea;
         }
 
-        public string ReducirCadena(string[] Cadena)
+        public string ReducirCadena(string[] Cadena,bool horizontal)
         {
             string Linea = ConcatenarArreglo(Cadena);
             int i = 0;
 
             bool reducido = false;
 
-            while (reducido == false)
+            if (horizontal)
             {
-                if (i >= Semantica.GetLength(0))
+                while (reducido == false)
                 {
-                    return "Error";
+                    if (i >= Semantica.GetLength(0))
+                    {
+                        return "Error";
+                    }
+                    else if (Linea == Semantica[i, 1])
+                    {
+                        Linea = Semantica[i, 0].Trim();
+                        reducido = true;
+                    }
+                    i++;
                 }
-                else if (Linea == Semantica[i, 1])
+            }
+            else
+            {
+                while (reducido == false)
                 {
-                    Linea = Semantica[i, 0].Trim();
-                    reducido = true;
+                    if (i >= ReglasVertical.GetLength(0))
+                    {
+                        return "Error";
+                    }
+                    else if (Linea == ReglasVertical[i, 1])
+                    {
+                        Linea = ReglasVertical[i, 0].Trim();
+                        reducido = true;
+                    }
+                    i++;
                 }
-                i++;
             }
             return Linea;
         }
