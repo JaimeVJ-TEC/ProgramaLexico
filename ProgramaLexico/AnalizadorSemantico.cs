@@ -19,12 +19,17 @@ namespace ProgramaLexico
         public string[,] Semantica;
         public string[,] ReglasVertical;
 
-        int OpenCant = -1;
+
+        int ContIni = 0;
+        int ContDo = 0;
+        int ContComp = 0;
+        int ContCase = 0;
+        List<string> InstruccionesActuales = new List<string>();
         List<string> InstruccionesComp = new List<string>();
         int PorPasoLinea = 0;
         bool PorPasBln = false;
         string[] TokensValidos = new string[] {"S","SWITCH", "WHILE", "CFOR", "CASE", "IF","ELIF", "ELSE", 
-                                                "BEGIN", "END", "BREAK", "OPEN", "CLOSE", "NOAP", "DO"};
+                                                "BEGIN", "END", "BREAK", "OPEN", "CLOSE", "NOAP", "DO","DEFAULT"};
 
         public string[,] LlenarSemanticatxt(string FileName)
         {
@@ -106,7 +111,11 @@ namespace ProgramaLexico
 
         public void AnalisisVertical()
         {
-            OpenCant = -1;
+            InstruccionesActuales = new List<string>();
+            ContIni = 0;
+            ContDo = 0;
+            ContComp = 0;
+            ContCase = 0;
 
             //Convetimos las S que se generaron en el analisis horizontal a CON para empezar el analisis Vertical
             for (int i = 0; i < ArchivoTokens.Count; i++)
@@ -130,37 +139,63 @@ namespace ProgramaLexico
 
             if(ArregloJELU[0] != "S")
             {
-                int CantError = 0;
-                int Contador = 1;
-
                 foreach (string s in ArregloJELU)
                 {
-                    Contador++;
                     if (s.Contains("ER"))
                     {
-                        CantError++;
                         Error error = new Error();
                         error.Linea = -1;
                         error.Descripcion = "Error Instruccion: " + s.Substring(2) + " no se abrio";
                         Errores.Add(error);
                     }
                 }
-                
-                if(OpenCant>=0 && CantError == 0)
+
+                if(ContIni != 0)
                 {
                     Error error = new Error();
                     error.Linea = -1;
-                    error.Descripcion = "Error Instruccion: "+InstruccionesComp[OpenCant]+" no se cerro";
+                    if (ContIni > 0)
+                        error.Descripcion = "Error instruccion BEGIN se abrio pero no se cerro";
+                    else
+                        error.Descripcion = "Error instruccion BEGIN se cerro pero no se abrio";
                     Errores.Add(error);
                 }
-                else if (CantError < 0)
+
+                if (ContDo != 0)
                 {
                     Error error = new Error();
                     error.Linea = -1;
-                    error.Descripcion = "Error instruccion compuesta se cerro pero no se abrio";
+                    if (ContDo > 0)
+                        error.Descripcion = "Error instruccion DO se abrio pero no se cerro";
+                    else
+                        error.Descripcion = "Error instruccion DO se cerro pero no se abrio";
+                    Errores.Add(error);
+                }
+
+                if (ContCase != 0)
+                {
+                    Error error = new Error();
+                    error.Linea = -1;
+                    if (ContCase > 0)
+                        error.Descripcion = "Error instruccion CASE se abrio pero no se cerro";
+                    else
+                        error.Descripcion = "Error instruccion CASE se cerro pero no se abrio";
+                    Errores.Add(error);
+                }
+
+                if (ContComp != 0)
+                {
+                    Error error = new Error();
+                    error.Linea = -1;
+                    if (ContComp > 0)
+                        error.Descripcion = "Error instruccion "+ InstruccionesActuales[ContComp-1] +" se abrio pero no se cerro, '}' esperado";
+                    else
+                        error.Descripcion = "'}' Inesperado";
                     Errores.Add(error);
                 }
             }
+            ArchivoTokens = new List<string[]>();
+            ArchivoTokens.Add(ArregloJELU);
         }
 
         public void AnalizarPorPaso()
@@ -229,22 +264,45 @@ namespace ProgramaLexico
                     }
                     else
                     {
-                        if (!Horizontal)
+                        if(!Horizontal)
                         {
-                            if (Resultado == "CONC" || Resultado == "S")
-                            {
-                                OpenCant--;
-                            }
-                            else if (Resultado.Contains("ER"))
-                            {
+                            Dictionary<string,string> InsComp = new Dictionary<string, string>() { { "CONSW", "SWITCH" }, { "CONIF","IF" }, { "CONEL","ELSE" }, 
+                                                                                                { "CONELI","ELSE IF" }, { "CONFOR","FOR" }, { "CONWH","WHILE" } };
 
-                            }
-                            else if (Resultado != "CON" && Resultado != "CONC" && Resultado != "CLOSE")
+                            switch (Resultado)
                             {
-                                OpenCant++;
-                                InstruccionesComp.Add(Linea[PosicionActual]);
+                                case "CONB":
+                                    ContIni++;
+                                    break;
+                                case "CONEND":
+                                    ContIni--;
+                                    break;
+                                case "CONDO":
+                                    ContDo++;
+                                    break;
+                                case "CLOSEDO":
+                                    ContDo--;
+                                    break;
+                                case "CONCA":
+                                    ContCase++;
+                                    break;
+                                case "BREAK":
+                                    ContCase--;
+                                    break;
+                                case "CLOSEC":
+                                    ContComp--;
+                                    break;
+
+                                default:
+                                    if (InsComp.ContainsKey(Resultado))
+                                    {
+                                        InstruccionesActuales.Add(InsComp[Resultado]);
+                                        ContComp++;
+                                    }
+                                    break;
                             }
                         }
+                        
                         Linea = ReemplazarArreglo(Linea, Resultado, Enumerable.Range(PosicionActual, CantidadTokens).ToArray());
                         Debug.WriteLine(ConcatenarArreglo(Linea));
                         PosicionActual = 0;
@@ -338,5 +396,6 @@ namespace ProgramaLexico
 
             return lista.ToArray();
         }
+
     }
 }

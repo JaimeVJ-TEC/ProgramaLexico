@@ -169,6 +169,7 @@ namespace ProgramaLexico
             this.dtgErrores.AllowUserToDeleteRows = false;
             this.dtgErrores.AllowUserToResizeColumns = false;
             this.dtgErrores.AllowUserToResizeRows = false;
+            this.dtgErrores.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dtgErrores.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dtgErrores.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dtgErrores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
