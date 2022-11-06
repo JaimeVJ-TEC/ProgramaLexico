@@ -167,13 +167,7 @@ namespace ProgramaLexico
         {
             if (PorPasoLinea >= ArchivoTokensPorPaso.Count)
             {
-                MessageBox.Show("Archivo de tokens vacio");
-                return;
-            }
-
-            if (PorPasoLinea >= ArchivoTokensPorPaso.Count)
-            {
-                MessageBox.Show("Analisis semantico finalizado");
+                MessageBox.Show("Analisis semantico horizontal finalizado");
                 return;
             }
 
