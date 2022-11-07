@@ -57,7 +57,7 @@ namespace ProgramaLexico
                 {
                     if (Tipos.TryGetValue(linea[i].Substring(0, 3), out bool value) || linea[i].Substring(0, 2) == "ID")
                     {
-                        int numero = int.Parse(linea[i][linea[i].Length - 1].ToString());
+                        int numero = linea[i].Substring(0, 2) == "ID" ? int.Parse(linea[i].Substring(3)) : int.Parse(linea[i].Substring(4));
                         linea[i] = TablaSimbolosSem[numero].TipoDato == null ? "SINTIPO" : TablaSimbolosSem[numero].TipoDato.ToUpper();
                     }
 
