@@ -19,6 +19,7 @@ namespace ProgramaLexico
         AnalizadorLexico AnalisisLexico = new AnalizadorLexico();
         AnalizadorSintactico AnalisisSintax;
         AnalizadorSemantico AnalisisSemantico;
+        CodigoIntermedio GeneradorDeCodigoInt;
 
         public Form1()
         {
@@ -484,5 +485,19 @@ namespace ProgramaLexico
 
         #endregion
 
+        private void btnCodigoInt_Click(object sender, EventArgs e)
+        {
+            GeneradorDeCodigoInt = new CodigoIntermedio(AnalisisLexico.ArchivoTokensNumero);
+            string TextoTokens = "";
+            foreach (string[] array in GeneradorDeCodigoInt.ArchivoTokensPostfijo)
+            {
+                foreach (string s in array)
+                {
+                    TextoTokens += " " + s;
+                }
+                TextoTokens += "\n";
+            }
+            txtSem.Text = TextoTokens;
+        }
     }
 }
