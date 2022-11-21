@@ -487,7 +487,7 @@ namespace ProgramaLexico
 
         private void btnCodigoInt_Click(object sender, EventArgs e)
         {
-            GeneradorDeCodigoInt = new CodigoIntermedio(AnalisisLexico.ArchivoTokensNumero);
+            GeneradorDeCodigoInt = new CodigoIntermedio(AnalisisLexico.ArchivoTokensNumero,AnalisisLexico.TablaSimbolos);
             string TextoTokens = "";
             foreach (string[] array in GeneradorDeCodigoInt.ArchivoTokensPostfijo)
             {

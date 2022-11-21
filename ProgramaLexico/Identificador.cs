@@ -17,5 +17,6 @@ namespace ProgramaLexico
         //Tipo de dato  dinamico para que pueda ser cualquiera (funciona como en js)
         public dynamic Valor { get; set; }
 
+        public int Offset { get; set; }
     }
 }

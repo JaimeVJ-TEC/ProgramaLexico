@@ -15,9 +15,9 @@ namespace ProgramaLexico
 
     public struct Renglon
     {
-        public string DatoObjeto { get; set; }
+        public string Argumento1 { get; set; }
 
-        public string DatoFuente { get; set; }
+        public string Argumento2 { get; set; }
 
         public string Operador { get; set; }
     }
