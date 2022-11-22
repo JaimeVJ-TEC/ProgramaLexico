@@ -13,6 +13,9 @@ namespace ProgramaLexico
         public List<string[]> ArchivoTokensPostfijo;
         public List<Stack<string>> LineasStacks = new List<Stack<string>>();
         public List<Identificador> TablaSimbolos;
+        int EtiquetaCont = 0;
+        int TempCont = 0;
+        int TempRel = 0;
 
         Dictionary<string, int> PrioridadDeOperadores = new Dictionary<string, int>() { {"OPAR1",4 }, { "OPAR2", 4 }, { "OPAR3", 5 },
                                                                                         {"OPAR4",5 }, { "OPAR5", 6 }, { "OPAR6", 3 },
@@ -40,7 +43,7 @@ namespace ProgramaLexico
                 ArchivoTokensPostfijo.Add(Copia);
             }
             ArchivoTokensPostfijo = ConversionPostfija(ArchivoTokensPostfijo);
-            GeneracionTripletas(LineasStacks,"Main",0,1,1);
+            GeneracionTripletas(LineasStacks,"Main");
         }
 
         public List<string[]> ConversionPostfija(List<string[]> ArchivoTokensN)
@@ -106,7 +109,7 @@ namespace ProgramaLexico
             return ArchivoTokensN;
         }
 
-        public void GeneracionTripletas(List<Stack<string>> ListaStacks,string Nombre,int EtiquetaCont,int TempCont,int TempRel)
+        public void GeneracionTripletas(List<Stack<string>> ListaStacks,string Nombre)
         {
             Triples MainTripleta = new Triples();
             MainTripleta.Nombre = Nombre;
@@ -294,7 +297,7 @@ namespace ProgramaLexico
                         MainTripleta.Renglones.Add(renglon);
 
                         List<Stack<string>> SubList = ListaStacks.GetRange(NumLinea + 1, Count);
-                        GeneracionTripletas(SubList, "L" + (EtiquetaCont - 1), EtiquetaCont, TempCont, TempRel);
+                        GeneracionTripletas(SubList, "L" + (EtiquetaCont - 1));
 
                         if (Else != -1)
                         {
@@ -309,12 +312,11 @@ namespace ProgramaLexico
                             renglon = new Renglon();
                             renglon.Argumento1 = "ET";
                             renglon.Argumento2 = "L" + EtiquetaCont;
-                            EtiquetaCont++;
                             MainTripleta.Renglones.Add(renglon);
 
                             List<Stack<string>> SubList1 = ListaStacks.GetRange(Else + 1, CountE);
                             ListaStacks = ListaStacks.Except(SubList1).ToList();
-                            GeneracionTripletas(SubList1, "L" + EtiquetaCont, EtiquetaCont, TempCont, TempRel);
+                            GeneracionTripletas(SubList1, "L" + EtiquetaCont);
                         }
 
                         ListaStacks = ListaStacks.Except(SubList).ToList();

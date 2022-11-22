@@ -8,6 +8,7 @@ namespace ProgramaLexico
 {
     public class TraductorEnsamblador
     {
+        public List<Variable> Variables = new List<Variable>();
         public List<Triples> Tripletas = new List<Triples>();
         public List<Identificador> TablaSimbolos;
         public string ArchivoASM;
@@ -25,12 +26,18 @@ namespace ProgramaLexico
         {
             foreach(Identificador id in TablaSimbolos)
             {
-                if(CheckIfID(id.Descripcion) || id.TipoDato == "int")
+                Variable var = new Variable();
+                if (CheckIfID(id.Descripcion) || id.TipoDato == "int")
                 {
+                    var.Nombre = id.Descripcion;
+                    var.Tipo = id.TipoDato;
                     ArchivoASM += id.Descripcion + " DWORD ? \n";
                 }
                 else if(id.Descripcion.Contains("CAD"))
                 {
+                    var.Nombre = id.Descripcion;
+                    var.Tipo = id.TipoDato;
+
                     string aux = id.Valor;
                     aux = aux.Replace("\"","");
                     ArchivoASM += id.Descripcion + " BYTE \"" + aux + "\",0  \n";
@@ -43,5 +50,11 @@ namespace ProgramaLexico
             return !(desc.Contains("CNE") || desc.Contains("CAD") || desc.Contains("CNR") || desc.Contains("BLN") || desc.Contains("CHA"));
         }
 
+        public struct Variable
+        {
+            public string Nombre { get; set; }
+            public string Tipo { get; set; }
+            public string Valor { get; set; }
+        }
     }
 }
