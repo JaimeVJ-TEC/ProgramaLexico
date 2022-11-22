@@ -21,13 +21,10 @@ namespace ProgramaLexico
                                                                                         {"OPRE4",2 }, { "OPRE5", 2 },{ "OPRE6", 2 },
                                                                                         {"OPL1", 1 }, {"OPL2",0 }, { "OPL3", -1 },
                                                                                         {"CAE11",-2 }, {"CAE12",-2 }, { "OPAS", -2 },
-                                                                                        { "PR3", -3 }};
+                                                                                        { "PR3", -3 }, { "PR21", -3 }, { "PR20", -3 }};
         string[] OperadoresAritmeticos = new string[] { "OPAR1", "OPAR2", "OPAR3", "OPAR4", "OPAR5", "OPAR6", "OPAR7", "OPAR8", "OPAR9" };
         string[] OperadoresRelacionales = new string[] { "OPRE1", "OPRE2", "OPRE3", "OPRE4", "OPRE5", "OPRE6" };
         string[] OperadoresLogicos = new string[] { "OPL1", "OPL2", "OPL3" };
-
-        //IF, input, output, else
-        string[] Funciones = new string[] { "PR3", "PR21", "PR20","PR4" };
 
         public List<Triples> Tripletas = new List<Triples>();
 
@@ -116,8 +113,6 @@ namespace ProgramaLexico
             string LastObjeto = "";
             int NumLinea = 0;
 
-            //foreach (Stack<string> Linea in ListaStacks)
-
             for (int i = 0; i < ListaStacks.Count; i++)
             {
                 Stack<string> Linea = ListaStacks[i];
@@ -135,6 +130,7 @@ namespace ProgramaLexico
                             renglon = new Renglon();
                             renglon.Argumento1 = Operandos.Pop();
                             renglon.Operador = Token;
+                            MainTripleta.Renglones.Add(renglon);
                         }
                         else
                         {
@@ -335,6 +331,13 @@ namespace ProgramaLexico
                         renglon.Argumento1 = datoFuente1;
                         renglon.Argumento2 = datoFuente2;
                         renglon.Operador = "OPAS";
+                        MainTripleta.Renglones.Add(renglon);
+                    }
+                    else if(Token == "PR20" || Token == "PR21")
+                    {
+                        renglon = new Renglon();
+                        renglon.Argumento1 = Operandos.Pop();
+                        renglon.Operador = Token;
                         MainTripleta.Renglones.Add(renglon);
                     }
                     else
