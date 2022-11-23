@@ -14,6 +14,7 @@ namespace ProgramaLexico
         public List<Stack<string>> LineasStacks = new List<Stack<string>>();
         public List<Identificador> TablaSimbolos;
         int EtiquetaCont = 0;
+        int EtiquetaE = 0;
         int TempCont = 0;
         int TempRel = 0;
 
@@ -230,8 +231,9 @@ namespace ProgramaLexico
                     }
                     else if(OperadoresLogicos.Contains(Token))
                     {
+                        int Close = BuscarLineaLlaveCorrespondiente(NumLinea + 1, ListaStacks);
                         int CantidadOPL = ContarOperadoresLogicos(Linea);
-                        int Celse = BuscarElseCorrespondiente(NumLinea+1, ListaStacks);
+                        int Celse = BuscarElseCorrespondiente(Close, ListaStacks);
 
                         int aux1 = Celse == -1 ? 1 : 2;
                         string datoFuente2 = Operandos.Pop();
@@ -278,7 +280,7 @@ namespace ProgramaLexico
                             MainTripleta.Renglones[NumRenglon2] = renglon;
                             //TR2
                             renglon = MainTripleta.Renglones[NumRenglon1 + 1];
-                            renglon.Operador = (MainTripleta.Renglones.Count + 2).ToString();
+                            renglon.Operador = (MainTripleta.Renglones.Count + aux1).ToString();
                             MainTripleta.Renglones[NumRenglon2 + 1] = renglon;
                         }
 
@@ -286,8 +288,8 @@ namespace ProgramaLexico
                     }
                     else if (Token == "PR3")
                     {
-                        int Else = BuscarElseCorrespondiente(NumLinea, ListaStacks);
                         int Close = BuscarLineaLlaveCorrespondiente(NumLinea + 1, ListaStacks);
+                        int Else = BuscarElseCorrespondiente(Close, ListaStacks);
                         int Count = Close - (NumLinea + 1);
 
                         renglon = new Renglon();

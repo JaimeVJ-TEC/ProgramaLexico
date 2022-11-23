@@ -141,16 +141,15 @@ namespace ProgramaLexico
                         break;
 
                     default:
-                        if(r.Argumento1.Contains("TR"))
+                        if (r.Argumento1.Contains("TR"))
                         {
                             string EtiquetaLine = MainTripleta.Renglones[int.Parse(r.Operador)].Argumento2;
-                            if (!EtiquetaLine.Contains('L'))
+                            if(EtiquetaLine is null || MainTripleta.Renglones[int.Parse(r.Operador)].Argumento1[0] == 'T')
                             {
                                 EtiquetaLine = "U" + Unmarked;
-                                UnmarkedTags.Add(int.Parse(r.Operador),Unmarked);
+                                UnmarkedTags.Add(int.Parse(r.Operador), Unmarked);
                                 Unmarked++;
                             }
-
                             if (r.Argumento2 == "TRUE")
                             {
                                 switch (LastRel)
@@ -180,9 +179,9 @@ namespace ProgramaLexico
                                 Text += "JMP " + EtiquetaLine + "\n";
                             }
                         }
-                        else if(r.Argumento1 == "ET")
+                        else if (r.Argumento1 == "ET")
                         {
-                            if(!(r.Argumento2 is null))
+                            if (!(r.Argumento2 is null))
                             {
                                 if (r.Argumento2.Contains('L'))
                                 {
@@ -191,7 +190,7 @@ namespace ProgramaLexico
                                     {
                                         if (T.Nombre == r.Argumento2)
                                         {
-                                            string[] AuxStrings = WriteBody(T,Unmarked);
+                                            string[] AuxStrings = WriteBody(T, Unmarked);
                                             TextStart += AuxStrings[0];
                                             Text += AuxStrings[1];
                                         }
