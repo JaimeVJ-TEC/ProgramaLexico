@@ -41,7 +41,7 @@ namespace ProgramaLexico
         public string addVars()
         {
             string Text = "";
-            foreach(Identificador id in TablaSimbolos)
+            foreach (Identificador id in TablaSimbolos)
             {
                 if (CheckIfID(id.Descripcion) && id.TipoDato == "int")
                 {

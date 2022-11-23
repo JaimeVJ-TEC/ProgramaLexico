@@ -61,7 +61,6 @@ namespace ProgramaLexico
             this.btnSemPaso = new System.Windows.Forms.Button();
             this.btnLimpiarSem = new System.Windows.Forms.Button();
             this.btnCodigoInt = new System.Windows.Forms.Button();
-            this.btnCompilar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgIdentificadores)).BeginInit();
             this.SuspendLayout();
@@ -69,6 +68,7 @@ namespace ProgramaLexico
             // btnEvaluar
             // 
             this.btnEvaluar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEvaluar.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.btnEvaluar.Location = new System.Drawing.Point(296, 450);
             this.btnEvaluar.Name = "btnEvaluar";
             this.btnEvaluar.Size = new System.Drawing.Size(80, 39);
@@ -313,6 +313,7 @@ namespace ProgramaLexico
             // btnSintaxis
             // 
             this.btnSintaxis.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSintaxis.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.btnSintaxis.Location = new System.Drawing.Point(618, 450);
             this.btnSintaxis.Name = "btnSintaxis";
             this.btnSintaxis.Size = new System.Drawing.Size(86, 39);
@@ -361,6 +362,7 @@ namespace ProgramaLexico
             // btnSem
             // 
             this.btnSem.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSem.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.btnSem.Location = new System.Drawing.Point(924, 451);
             this.btnSem.Name = "btnSem";
             this.btnSem.Size = new System.Drawing.Size(97, 39);
@@ -405,24 +407,14 @@ namespace ProgramaLexico
             // btnCodigoInt
             // 
             this.btnCodigoInt.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCodigoInt.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.btnCodigoInt.Location = new System.Drawing.Point(1039, 519);
             this.btnCodigoInt.Name = "btnCodigoInt";
-            this.btnCodigoInt.Size = new System.Drawing.Size(80, 39);
+            this.btnCodigoInt.Size = new System.Drawing.Size(130, 39);
             this.btnCodigoInt.TabIndex = 29;
-            this.btnCodigoInt.Text = "Evaluar";
+            this.btnCodigoInt.Text = "Generar Codigo Intermedio";
             this.btnCodigoInt.UseVisualStyleBackColor = true;
             this.btnCodigoInt.Click += new System.EventHandler(this.btnCodigoInt_Click);
-            // 
-            // btnCompilar
-            // 
-            this.btnCompilar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCompilar.Location = new System.Drawing.Point(1125, 519);
-            this.btnCompilar.Name = "btnCompilar";
-            this.btnCompilar.Size = new System.Drawing.Size(80, 39);
-            this.btnCompilar.TabIndex = 30;
-            this.btnCompilar.Text = "Compilar";
-            this.btnCompilar.UseVisualStyleBackColor = true;
-            this.btnCompilar.Click += new System.EventHandler(this.btnCompilar_Click);
             // 
             // Form1
             // 
@@ -430,7 +422,6 @@ namespace ProgramaLexico
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GrayText;
             this.ClientSize = new System.Drawing.Size(1344, 675);
-            this.Controls.Add(this.btnCompilar);
             this.Controls.Add(this.btnCodigoInt);
             this.Controls.Add(this.btnLimpiarSem);
             this.Controls.Add(this.btnSemPaso);
@@ -501,7 +492,6 @@ namespace ProgramaLexico
         private System.Windows.Forms.Button btnSemPaso;
         private System.Windows.Forms.Button btnLimpiarSem;
         private System.Windows.Forms.Button btnCodigoInt;
-        private System.Windows.Forms.Button btnCompilar;
     }
 }
 

@@ -19,8 +19,7 @@ namespace ProgramaLexico
         AnalizadorLexico AnalisisLexico = new AnalizadorLexico();
         AnalizadorSintactico AnalisisSintax;
         AnalizadorSemantico AnalisisSemantico;
-        CodigoIntermedio GeneradorDeCodigoInt;
-
+        
         public Form1()
         {
             InitializeComponent();
@@ -28,6 +27,15 @@ namespace ProgramaLexico
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            btnEvaluar.FlatStyle = FlatStyle.Flat;
+            btnSem.FlatStyle = FlatStyle.Flat;
+            btnSintaxis.FlatStyle = FlatStyle.Flat;
+            btnCodigoInt.FlatStyle = FlatStyle.Flat;
+            btnEvaluar.BackColor = Color.FromArgb(0,122,204);
+            btnSem.BackColor = Color.FromArgb(0, 122, 204);
+            btnSintaxis.BackColor = Color.FromArgb(0, 122, 204);
+            btnCodigoInt.BackColor = Color.FromArgb(0, 122, 204);
+
             this.BackColor = Color.FromArgb(45, 45, 48);
             txtCadena.BackColor = Color.FromArgb(30, 30, 30);
             txtTokens.BackColor = Color.FromArgb(30, 30, 30);
@@ -487,6 +495,7 @@ namespace ProgramaLexico
 
         private void btnCodigoInt_Click(object sender, EventArgs e)
         {
+            /**
             GeneradorDeCodigoInt = new CodigoIntermedio(AnalisisLexico.ArchivoTokensNumero,AnalisisLexico.TablaSimbolos);
             string TextoTokens = "";
             foreach (string[] array in GeneradorDeCodigoInt.ArchivoTokensPostfijo)
@@ -498,12 +507,23 @@ namespace ProgramaLexico
                 TextoTokens += "\n";
             }
             txtSem.Text = TextoTokens;
-        }
-
-        private void btnCompilar_Click(object sender, EventArgs e)
-        {
-            GeneradorDeCodigoInt = new CodigoIntermedio(AnalisisLexico.ArchivoTokensNumero, AnalisisLexico.TablaSimbolos);
-            TraductorEnsamblador traductor = new TraductorEnsamblador(GeneradorDeCodigoInt.Tripletas, AnalisisLexico.TablaSimbolos);
+            */
+            if (!(AnalisisSemantico is null))
+            {
+                if (dtgErrores.Rows.Count == 0 && AnalisisSemantico.Errores.Count == 0)
+                {
+                    CodigoInt form = new CodigoInt(AnalisisLexico);
+                    form.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Corregir Errores");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Evalue el codigo");
+            }
         }
     }
 }
