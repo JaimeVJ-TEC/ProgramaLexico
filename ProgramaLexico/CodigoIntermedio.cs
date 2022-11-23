@@ -306,7 +306,7 @@ namespace ProgramaLexico
                             renglon.Operador = (MainTripleta.Renglones.Count + 2).ToString();
                             MainTripleta.Renglones.Add(renglon);
 
-                            int CloseE = BuscarLineaLlaveCorrespondiente(Else + 1, LineasStacks);
+                            int CloseE = BuscarLineaLlaveCorrespondiente(Else + 1, ListaStacks);
                             int CountE = CloseE - (Else + 1);
 
                             renglon = new Renglon();
@@ -321,7 +321,9 @@ namespace ProgramaLexico
 
                         ListaStacks = ListaStacks.Except(SubList).ToList();
                         renglon = new Renglon();
+                        EtiquetaCont++;
                         renglon.Argumento1 = "ET";
+                        renglon.Argumento2 = "E" + EtiquetaCont;
                         MainTripleta.Renglones.Add(renglon);
                     }
                     else if(Token == "OPAS")

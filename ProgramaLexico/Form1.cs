@@ -499,5 +499,11 @@ namespace ProgramaLexico
             }
             txtSem.Text = TextoTokens;
         }
+
+        private void btnCompilar_Click(object sender, EventArgs e)
+        {
+            GeneradorDeCodigoInt = new CodigoIntermedio(AnalisisLexico.ArchivoTokensNumero, AnalisisLexico.TablaSimbolos);
+            TraductorEnsamblador traductor = new TraductorEnsamblador(GeneradorDeCodigoInt.Tripletas, AnalisisLexico.TablaSimbolos);
+        }
     }
 }

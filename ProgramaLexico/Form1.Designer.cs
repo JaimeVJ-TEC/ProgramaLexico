@@ -61,6 +61,7 @@ namespace ProgramaLexico
             this.btnSemPaso = new System.Windows.Forms.Button();
             this.btnLimpiarSem = new System.Windows.Forms.Button();
             this.btnCodigoInt = new System.Windows.Forms.Button();
+            this.btnCompilar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dtgErrores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgIdentificadores)).BeginInit();
             this.SuspendLayout();
@@ -412,12 +413,24 @@ namespace ProgramaLexico
             this.btnCodigoInt.UseVisualStyleBackColor = true;
             this.btnCodigoInt.Click += new System.EventHandler(this.btnCodigoInt_Click);
             // 
+            // btnCompilar
+            // 
+            this.btnCompilar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCompilar.Location = new System.Drawing.Point(1125, 519);
+            this.btnCompilar.Name = "btnCompilar";
+            this.btnCompilar.Size = new System.Drawing.Size(80, 39);
+            this.btnCompilar.TabIndex = 30;
+            this.btnCompilar.Text = "Compilar";
+            this.btnCompilar.UseVisualStyleBackColor = true;
+            this.btnCompilar.Click += new System.EventHandler(this.btnCompilar_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GrayText;
             this.ClientSize = new System.Drawing.Size(1344, 675);
+            this.Controls.Add(this.btnCompilar);
             this.Controls.Add(this.btnCodigoInt);
             this.Controls.Add(this.btnLimpiarSem);
             this.Controls.Add(this.btnSemPaso);
@@ -488,6 +501,7 @@ namespace ProgramaLexico
         private System.Windows.Forms.Button btnSemPaso;
         private System.Windows.Forms.Button btnLimpiarSem;
         private System.Windows.Forms.Button btnCodigoInt;
+        private System.Windows.Forms.Button btnCompilar;
     }
 }
 
